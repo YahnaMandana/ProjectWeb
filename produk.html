@@ -10,6 +10,8 @@
 </head>
 <body>
 
+  <div class="scroll-progress" id="scrollProgress"></div>
+
   <!-- NAVIGATION -->
   <nav class="navbar">
     <div class="nav-inner">
@@ -41,6 +43,9 @@
 
   <!-- PAGE HERO -->
   <section class="page-hero">
+    <div class="hero-shape s1"></div>
+    <div class="hero-shape s2"></div>
+    <div class="hero-shape s3"></div>
     <h1>🛍️ Katalog Produk</h1>
     <p>Temukan pilihan makanan lezat dan segar untuk Anda dan keluarga</p>
     <div class="breadcrumb">
@@ -87,7 +92,7 @@
           <div class="product-grid">
 
             <!-- Sosis Mix 1 -->
-            <div class="product-card" data-category="sosis">
+            <div class="product-card reveal" data-category="sosis">
               <div class="product-img-wrap">
                 <div class="img-placeholder"><div class="ph-icon">🌭</div><div class="ph-text">Foto Produk</div></div>
                 <span class="product-badge">Terlaris</span>
@@ -103,7 +108,7 @@
             </div>
 
             <!-- Yakult Original -->
-            <div class="product-card" data-category="minuman">
+            <div class="product-card reveal" data-category="minuman">
               <div class="product-img-wrap">
                 <div class="img-placeholder"><div class="ph-icon">🥛</div><div class="ph-text">Foto Produk</div></div>
                 <span class="product-badge">Terlaris</span>
@@ -119,7 +124,7 @@
             </div>
 
             <!-- Yakult Light -->
-            <div class="product-card" data-category="minuman">
+            <div class="product-card reveal" data-category="minuman">
               <div class="product-img-wrap">
                 <div class="img-placeholder"><div class="ph-icon">🥛</div><div class="ph-text">Foto Produk</div></div>
                 <span class="product-badge new">Baru</span>
@@ -135,7 +140,7 @@
             </div>
 
             <!-- Yakult Rasa Mangga -->
-            <div class="product-card" data-category="minuman">
+            <div class="product-card reveal" data-category="minuman">
               <div class="product-img-wrap">
                 <div class="img-placeholder"><div class="ph-icon">🥛</div><div class="ph-text">Foto Produk</div></div>
                 <span class="product-badge new">Baru</span>
@@ -211,6 +216,7 @@
   </footer>
 
   <div class="toast-container"></div>
+  <button class="back-to-top" id="backToTop" title="Kembali ke atas">↑</button>
   <script src="js/main.js"></script>
 </body>
 </html>
