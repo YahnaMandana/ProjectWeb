@@ -187,7 +187,7 @@ function initScrollReveal() {
   if (!elements.length) return;
 
   const observer = new IntersectionObserver((entries) => {
-    entries.forEach((entry, i) => {
+    entries.forEach((entry) => {
       if (entry.isIntersecting) {
         // Staggered delay for sibling items
         const siblings = [...entry.target.parentElement.querySelectorAll('.reveal')];
