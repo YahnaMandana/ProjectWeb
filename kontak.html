@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Hubungi KUSTINI STORE — nomor telepon, alamat, dan formulir pesan." />
+  <title>Kontak — KUSTINI STORE</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="icon" href="images/logo.png" type="image/png" />
+</head>
+<body>
+
+  <!-- NAVIGATION -->
+  <nav class="navbar">
+    <div class="nav-inner">
+      <a href="index.html" class="logo">
+        <div style="width:48px;height:48px;background:var(--primary);border-radius:10px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:900;font-size:1.4rem;flex-shrink:0;">K</div>
+        <div class="logo-text">
+          <span class="logo-name">KUSTINI STORE</span>
+          <span class="logo-tagline">Makanan Lezat &amp; Segar</span>
+        </div>
+      </a>
+      <ul class="nav-links">
+        <li><a href="index.html">Beranda</a></li>
+        <li><a href="produk.html">Produk</a></li>
+        <li><a href="tentang.html">Tentang</a></li>
+        <li><a href="kontak.html" class="active">Kontak</a></li>
+      </ul>
+      <div style="display:flex;align-items:center;gap:20px;">
+        <div class="cart-icon" title="Keranjang Belanja">🛒<span class="cart-badge" style="display:none;">0</span></div>
+        <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
+      </div>
+    </div>
+    <div class="mobile-nav" id="mobileNav">
+      <a href="index.html">🏠 Beranda</a>
+      <a href="produk.html">🛍️ Produk</a>
+      <a href="tentang.html">ℹ️ Tentang Kami</a>
+      <a href="kontak.html">📞 Kontak</a>
+    </div>
+  </nav>
+
+  <!-- PAGE HERO -->
+  <section class="page-hero">
+    <h1>📞 Hubungi Kami</h1>
+    <p>Ada pertanyaan, pesan, atau kritik? Kami siap mendengar dan melayani Anda</p>
+    <div class="breadcrumb">
+      <a href="index.html">Beranda</a> <span>/</span> <span>Kontak</span>
+    </div>
+  </section>
+
+  <!-- CONTACT PAGE -->
+  <section class="contact-page">
+    <div class="container">
+      <div class="contact-layout">
+
+        <!-- Contact Details -->
+        <div class="contact-detail-card">
+          <h3>Informasi Kontak</h3>
+
+          <div class="contact-item">
+            <div class="contact-item-icon">📞</div>
+            <div class="contact-item-text">
+              <h4>Telepon / WhatsApp</h4>
+              <!-- Ganti dengan nomor telepon Anda -->
+              <p>+62 [Nomor Telepon Anda]<br />Tersedia untuk WhatsApp</p>
+            </div>
+          </div>
+
+          <div class="contact-item">
+            <div class="contact-item-icon">📧</div>
+            <div class="contact-item-text">
+              <h4>Email</h4>
+              <p>[email@kustinistore.com]</p>
+            </div>
+          </div>
+
+          <div class="contact-item">
+            <div class="contact-item-icon">📍</div>
+            <div class="contact-item-text">
+              <h4>Alamat Toko</h4>
+              <p>[Alamat Lengkap Toko Anda]<br />[Kota, Provinsi, Kode Pos]</p>
+            </div>
+          </div>
+
+          <div class="contact-item">
+            <div class="contact-item-icon">⏰</div>
+            <div class="contact-item-text">
+              <h4>Jam Operasional</h4>
+              <p>Senin – Sabtu: 08.00 – 20.00 WIB<br />Minggu: 08.00 – 15.00 WIB</p>
+            </div>
+          </div>
+
+          <!-- Social Media -->
+          <div style="margin-top:28px;">
+            <h4 style="font-weight:700;margin-bottom:14px;font-size:.95rem;">Media Sosial</h4>
+            <div class="social-links" style="margin-top:0;">
+              <a href="#" title="WhatsApp" style="background:var(--primary);color:#fff;">💬</a>
+              <a href="#" title="Instagram" style="background:var(--primary);color:#fff;">📸</a>
+              <a href="#" title="Facebook" style="background:var(--primary);color:#fff;">👍</a>
+              <a href="#" title="TikTok" style="background:var(--primary);color:#fff;">🎵</a>
+            </div>
+          </div>
+
+          <!-- Map placeholder -->
+          <div class="map-wrap">
+            <div style="text-align:center;">
+              <div style="font-size:2rem;margin-bottom:8px;">🗺️</div>
+              <p>Peta Lokasi Toko<br /><small>(Embed Google Maps di sini)</small></p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Contact Form -->
+        <div class="contact-form-card">
+          <h3>📩 Kirim Pesan</h3>
+
+          <form id="contactForm" novalidate>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="nama">Nama Lengkap *</label>
+                <input type="text" id="nama" name="nama" placeholder="Nama Anda" required />
+              </div>
+              <div class="form-group">
+                <label for="telepon">Nomor Telepon</label>
+                <input type="tel" id="telepon" name="telepon" placeholder="+62 xxx xxxx xxxx" />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="email">Email *</label>
+              <input type="email" id="email" name="email" placeholder="email@contoh.com" required />
+            </div>
+
+            <div class="form-group">
+              <label for="subjek">Subjek</label>
+              <select id="subjek" name="subjek">
+                <option value="">-- Pilih Subjek --</option>
+                <option value="pemesanan">Pemesanan Produk</option>
+                <option value="info">Informasi Produk</option>
+                <option value="pengiriman">Pertanyaan Pengiriman</option>
+                <option value="kerjasama">Kerjasama / Reseller</option>
+                <option value="lainnya">Lainnya</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="pesan">Pesan *</label>
+              <textarea id="pesan" name="pesan" placeholder="Tuliskan pesan Anda di sini..." required></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;display:flex;align-items:center;gap:8px;">
+              📨 Kirim Pesan
+            </button>
+          </form>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- QUICK CONTACT STRIP -->
+  <section class="contact-strip" style="padding:50px 20px;">
+    <div class="container">
+      <h2>💬 Chat via WhatsApp</h2>
+      <p>Lebih mudah? Hubungi kami langsung via WhatsApp untuk respons lebih cepat!</p>
+      <!-- Ganti href dengan link WhatsApp Anda: https://wa.me/628XXXXXXXXXX -->
+      <a href="https://wa.me/628XXXXXXXXXX" class="btn btn-secondary" target="_blank" rel="noopener noreferrer">
+        💬 Chat WhatsApp Sekarang
+      </a>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="logo">
+            <div style="width:44px;height:44px;background:var(--primary);border-radius:8px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:900;font-size:1.3rem;flex-shrink:0;">K</div>
+            <div class="logo-text">
+              <span class="logo-name">KUSTINI STORE</span>
+              <span class="logo-tagline">Makanan Lezat &amp; Segar</span>
+            </div>
+          </div>
+          <p>Toko makanan pilihan dengan produk berkualitas tinggi, halal, dan harga terjangkau.</p>
+          <div class="social-links">
+            <a href="#" title="WhatsApp">💬</a>
+            <a href="#" title="Instagram">📸</a>
+            <a href="#" title="Facebook">👍</a>
+            <a href="#" title="TikTok">🎵</a>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h4>Menu</h4>
+          <ul>
+            <li><a href="index.html">Beranda</a></li>
+            <li><a href="produk.html">Produk</a></li>
+            <li><a href="tentang.html">Tentang Kami</a></li>
+            <li><a href="kontak.html">Kontak</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Kategori</h4>
+          <ul>
+            <li><a href="produk.html?cat=sosis">Sosis</a></li>
+            <li><a href="produk.html?cat=nugget">Nugget</a></li>
+            <li><a href="produk.html?cat=bakso">Bakso</a></li>
+            <li><a href="produk.html?cat=frozen">Frozen Food</a></li>
+            <li><a href="produk.html?cat=snack">Snack</a></li>
+          </ul>
+        </div>
+        <div class="footer-col footer-contact">
+          <h4>Hubungi Kami</h4>
+          <p>📞 +62 [Nomor Telepon]</p>
+          <p>📧 [Email Anda]</p>
+          <p>📍 [Alamat Toko]</p>
+          <p>⏰ Senin–Sabtu, 08.00–20.00</p>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>&copy; 2025 KUSTINI STORE. Semua hak dilindungi.</span>
+        <span>Dibuat dengan ❤️ untuk pelanggan setia kami</span>
+      </div>
+    </div>
+  </footer>
+
+  <div class="toast-container"></div>
+  <script src="js/main.js"></script>
+</body>
+</html>
