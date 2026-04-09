@@ -306,6 +306,10 @@ ul { list-style: none; }
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 24px;
 }
+.features-grid--single {
+  grid-template-columns: minmax(200px, 480px);
+  justify-content: center;
+}
 .feature-item {
   display: flex;
   align-items: center;
