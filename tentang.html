@@ -10,6 +10,8 @@
 </head>
 <body>
 
+  <div class="scroll-progress" id="scrollProgress"></div>
+
   <!-- NAVIGATION -->
   <nav class="navbar">
     <div class="nav-inner">
@@ -41,6 +43,9 @@
 
   <!-- PAGE HERO -->
   <section class="page-hero">
+    <div class="hero-shape s1"></div>
+    <div class="hero-shape s2"></div>
+    <div class="hero-shape s3"></div>
     <h1>ℹ️ Tentang Kami</h1>
     <p>Mengenal lebih dekat KUSTINI STORE dan perjalanan kami</p>
     <div class="breadcrumb">
@@ -52,14 +57,14 @@
   <section class="about" style="padding:80px 20px;">
     <div class="container">
       <div class="about-inner">
-        <div class="about-img-wrap">
+        <div class="about-img-wrap reveal reveal-left">
           <!-- Ganti dengan foto toko Anda -->
           <div class="about-img-placeholder">
             <div class="placeholder-icon">🏪</div>
             <p>Foto Toko / Tim Anda</p>
           </div>
         </div>
-        <div class="about-text">
+        <div class="about-text reveal reveal-right">
           <span class="about-label">Kisah Kami</span>
           <h2>Dari Dapur ke Meja Makan Anda</h2>
           <p>KUSTINI STORE lahir dari semangat menyediakan makanan berkualitas tinggi yang lezat, halal, dan terjangkau untuk seluruh keluarga Indonesia.</p>
@@ -230,6 +235,7 @@
   </footer>
 
   <div class="toast-container"></div>
+  <button class="back-to-top" id="backToTop" title="Kembali ke atas">↑</button>
   <script src="js/main.js"></script>
 </body>
 </html>
