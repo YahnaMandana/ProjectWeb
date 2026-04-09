@@ -60,29 +60,14 @@
           <div class="filter-group">
             <h4>Kategori</h4>
             <label class="filter-option">
-              <input type="checkbox" data-filter-cat value="sosis" /> Sosis 🌭
-            </label>
-            <label class="filter-option">
-              <input type="checkbox" data-filter-cat value="nugget" /> Nugget 🍗
-            </label>
-            <label class="filter-option">
-              <input type="checkbox" data-filter-cat value="bakso" /> Bakso 🍲
-            </label>
-            <label class="filter-option">
-              <input type="checkbox" data-filter-cat value="frozen" /> Frozen Food 🧊
-            </label>
-            <label class="filter-option">
-              <input type="checkbox" data-filter-cat value="snack" /> Snack 🍟
+              <input type="checkbox" data-filter-cat value="sosis" checked /> Sosis 🌭
             </label>
           </div>
 
           <div class="filter-group">
             <h4>Tersedia</h4>
             <label class="filter-option">
-              <input type="checkbox" /> Stok Tersedia
-            </label>
-            <label class="filter-option">
-              <input type="checkbox" /> Produk Baru
+              <input type="checkbox" checked /> Stok Tersedia
             </label>
             <label class="filter-option">
               <input type="checkbox" /> Promo &amp; Diskon
@@ -93,192 +78,39 @@
         <!-- Product Grid -->
         <div class="products-main">
           <div class="sort-bar">
-            <span style="font-size:.9rem;color:var(--gray);">Menampilkan <strong>12</strong> produk</span>
-            <select aria-label="Urutkan produk">
-              <option>Urutkan: Terpopuler</option>
-              <option>Harga: Rendah ke Tinggi</option>
-              <option>Harga: Tinggi ke Rendah</option>
-              <option>Terbaru</option>
-            </select>
+            <span style="font-size:.9rem;color:var(--gray);">Menampilkan <strong>2</strong> produk</span>
           </div>
 
           <div class="product-grid">
 
-            <!-- Sosis -->
+            <!-- Sosis Mix 1 -->
             <div class="product-card" data-category="sosis">
               <div class="product-img-wrap">
                 <div class="img-placeholder"><div class="ph-icon">🌭</div><div class="ph-text">Foto Produk</div></div>
                 <span class="product-badge">Terlaris</span>
               </div>
               <div class="product-info">
-                <h3>Sosis Ayam Original</h3>
-                <p>Sosis ayam lembut bumbu rempah, 10 pcs / pack.</p>
+                <h3>Sosis Mix</h3>
+                <p>Sosis mix lezat berbagai varian, cocok untuk camilan keluarga. Mulai dari harga terjangkau!</p>
                 <div class="product-footer">
-                  <span class="product-price">Rp [Harga]</span>
-                  <button class="add-cart">+ Keranjang</button>
+                  <span class="product-price">Mulai Rp 1.000</span>
+                  <a class="add-cart" href="https://wa.me/6281807159805?text=Permisi%2C%20Bu.%20Bolehkah%20saya%20mengetahui%20harga%20sosis%20mix%20ini%3F%20Terima%20kasih." target="_blank" rel="noopener noreferrer">💬 Tanya WhatsApp</a>
                 </div>
               </div>
             </div>
 
+            <!-- Sosis Mix 2 -->
             <div class="product-card" data-category="sosis">
               <div class="product-img-wrap">
                 <div class="img-placeholder"><div class="ph-icon">🌭</div><div class="ph-text">Foto Produk</div></div>
-                <span class="product-badge new">Baru</span>
+                <span class="product-badge new">Promo</span>
               </div>
               <div class="product-info">
-                <h3>Sosis Sapi Spesial</h3>
-                <p>Sosis sapi premium, gurih dan kenyal, 10 pcs / pack.</p>
+                <h3>Sosis Mix Spesial</h3>
+                <p>Paket sosis mix spesial pilihan dengan rasa gurih dan lezat. Cocok untuk berbagai sajian.</p>
                 <div class="product-footer">
-                  <span class="product-price">Rp [Harga]</span>
-                  <button class="add-cart">+ Keranjang</button>
-                </div>
-              </div>
-            </div>
-
-            <div class="product-card" data-category="sosis">
-              <div class="product-img-wrap">
-                <div class="img-placeholder"><div class="ph-icon">🌭</div><div class="ph-text">Foto Produk</div></div>
-              </div>
-              <div class="product-info">
-                <h3>Sosis Bakar Mini</h3>
-                <p>Cocok untuk dipanggang, BBQ, atau digoreng. 20 pcs / pack.</p>
-                <div class="product-footer">
-                  <span class="product-price">Rp [Harga]</span>
-                  <button class="add-cart">+ Keranjang</button>
-                </div>
-              </div>
-            </div>
-
-            <!-- Nugget -->
-            <div class="product-card" data-category="nugget">
-              <div class="product-img-wrap">
-                <div class="img-placeholder"><div class="ph-icon">🍗</div><div class="ph-text">Foto Produk</div></div>
-              </div>
-              <div class="product-info">
-                <h3>Nugget Ayam Crispy</h3>
-                <p>Nugget ayam renyah, lembut di dalam. 500g / pack.</p>
-                <div class="product-footer">
-                  <span class="product-price">Rp [Harga]</span>
-                  <button class="add-cart">+ Keranjang</button>
-                </div>
-              </div>
-            </div>
-
-            <div class="product-card" data-category="nugget">
-              <div class="product-img-wrap">
-                <div class="img-placeholder"><div class="ph-icon">🍗</div><div class="ph-text">Foto Produk</div></div>
-                <span class="product-badge new">Baru</span>
-              </div>
-              <div class="product-info">
-                <h3>Nugget Ikan</h3>
-                <p>Nugget ikan segar bergizi, pilihan sehat untuk anak. 400g / pack.</p>
-                <div class="product-footer">
-                  <span class="product-price">Rp [Harga]</span>
-                  <button class="add-cart">+ Keranjang</button>
-                </div>
-              </div>
-            </div>
-
-            <!-- Bakso -->
-            <div class="product-card" data-category="bakso">
-              <div class="product-img-wrap">
-                <div class="img-placeholder"><div class="ph-icon">🍲</div><div class="ph-text">Foto Produk</div></div>
-                <span class="product-badge">Favorit</span>
-              </div>
-              <div class="product-info">
-                <h3>Bakso Sapi Jumbo</h3>
-                <p>Bakso sapi ukuran jumbo dari daging pilihan. 500g / pack.</p>
-                <div class="product-footer">
-                  <span class="product-price">Rp [Harga]</span>
-                  <button class="add-cart">+ Keranjang</button>
-                </div>
-              </div>
-            </div>
-
-            <div class="product-card" data-category="bakso">
-              <div class="product-img-wrap">
-                <div class="img-placeholder"><div class="ph-icon">🍲</div><div class="ph-text">Foto Produk</div></div>
-              </div>
-              <div class="product-info">
-                <h3>Bakso Urat Kenyal</h3>
-                <p>Bakso berurat, tekstur kenyal khas, cocok untuk berbagai masakan.</p>
-                <div class="product-footer">
-                  <span class="product-price">Rp [Harga]</span>
-                  <button class="add-cart">+ Keranjang</button>
-                </div>
-              </div>
-            </div>
-
-            <!-- Frozen Food -->
-            <div class="product-card" data-category="frozen">
-              <div class="product-img-wrap">
-                <div class="img-placeholder"><div class="ph-icon">🧊</div><div class="ph-text">Foto Produk</div></div>
-              </div>
-              <div class="product-info">
-                <h3>Dimsum Frozen Mix</h3>
-                <p>Paket dimsum siap kukus — siomay, hakau, lumpia mini.</p>
-                <div class="product-footer">
-                  <span class="product-price">Rp [Harga]</span>
-                  <button class="add-cart">+ Keranjang</button>
-                </div>
-              </div>
-            </div>
-
-            <div class="product-card" data-category="frozen">
-              <div class="product-img-wrap">
-                <div class="img-placeholder"><div class="ph-icon">🧊</div><div class="ph-text">Foto Produk</div></div>
-                <span class="product-badge new">Baru</span>
-              </div>
-              <div class="product-info">
-                <h3>Otak-Otak Beku</h3>
-                <p>Otak-otak ikan gurih, tinggal bakar atau goreng. 300g / pack.</p>
-                <div class="product-footer">
-                  <span class="product-price">Rp [Harga]</span>
-                  <button class="add-cart">+ Keranjang</button>
-                </div>
-              </div>
-            </div>
-
-            <!-- Snack -->
-            <div class="product-card" data-category="snack">
-              <div class="product-img-wrap">
-                <div class="img-placeholder"><div class="ph-icon">🍟</div><div class="ph-text">Foto Produk</div></div>
-              </div>
-              <div class="product-info">
-                <h3>Kentang Goreng Beku</h3>
-                <p>Kentang beku siap goreng, renyah dan lezat. 1 kg / pack.</p>
-                <div class="product-footer">
-                  <span class="product-price">Rp [Harga]</span>
-                  <button class="add-cart">+ Keranjang</button>
-                </div>
-              </div>
-            </div>
-
-            <div class="product-card" data-category="snack">
-              <div class="product-img-wrap">
-                <div class="img-placeholder"><div class="ph-icon">🍟</div><div class="ph-text">Foto Produk</div></div>
-                <span class="product-badge">Promo</span>
-              </div>
-              <div class="product-info">
-                <h3>Tempura Udang</h3>
-                <p>Tempura udang crispy berlapis tepung renyah. 300g / pack.</p>
-                <div class="product-footer">
-                  <span class="product-price">Rp [Harga]</span>
-                  <button class="add-cart">+ Keranjang</button>
-                </div>
-              </div>
-            </div>
-
-            <div class="product-card" data-category="snack">
-              <div class="product-img-wrap">
-                <div class="img-placeholder"><div class="ph-icon">🍟</div><div class="ph-text">Foto Produk</div></div>
-              </div>
-              <div class="product-info">
-                <h3>Cireng Beku Aneka Rasa</h3>
-                <p>Cireng isi aneka rasa — keju, pedas, original. 250g / pack.</p>
-                <div class="product-footer">
-                  <span class="product-price">Rp [Harga]</span>
-                  <button class="add-cart">+ Keranjang</button>
+                  <span class="product-price">Mulai Rp 1.000</span>
+                  <a class="add-cart" href="https://wa.me/6281807159805?text=Permisi%2C%20Bu.%20Bolehkah%20saya%20mengetahui%20harga%20sosis%20mix%20spesial%20ini%3F%20Terima%20kasih." target="_blank" rel="noopener noreferrer">💬 Tanya WhatsApp</a>
                 </div>
               </div>
             </div>
