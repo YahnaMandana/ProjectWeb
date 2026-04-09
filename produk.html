@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Katalog produk KUSTINI STORE — sosis, nugget, bakso, frozen food, dan snack terlengkap." />
+  <title>Produk — KUSTINI STORE</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="icon" href="images/logo.png" type="image/png" />
+</head>
+<body>
+
+  <!-- NAVIGATION -->
+  <nav class="navbar">
+    <div class="nav-inner">
+      <a href="index.html" class="logo">
+        <div style="width:48px;height:48px;background:var(--primary);border-radius:10px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:900;font-size:1.4rem;flex-shrink:0;">K</div>
+        <div class="logo-text">
+          <span class="logo-name">KUSTINI STORE</span>
+          <span class="logo-tagline">Makanan Lezat &amp; Segar</span>
+        </div>
+      </a>
+      <ul class="nav-links">
+        <li><a href="index.html">Beranda</a></li>
+        <li><a href="produk.html" class="active">Produk</a></li>
+        <li><a href="tentang.html">Tentang</a></li>
+        <li><a href="kontak.html">Kontak</a></li>
+      </ul>
+      <div style="display:flex;align-items:center;gap:20px;">
+        <div class="cart-icon" title="Keranjang Belanja">🛒<span class="cart-badge" style="display:none;">0</span></div>
+        <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
+      </div>
+    </div>
+    <div class="mobile-nav" id="mobileNav">
+      <a href="index.html">🏠 Beranda</a>
+      <a href="produk.html">🛍️ Produk</a>
+      <a href="tentang.html">ℹ️ Tentang Kami</a>
+      <a href="kontak.html">📞 Kontak</a>
+    </div>
+  </nav>
+
+  <!-- PAGE HERO -->
+  <section class="page-hero">
+    <h1>🛍️ Katalog Produk</h1>
+    <p>Temukan pilihan makanan lezat dan segar untuk Anda dan keluarga</p>
+    <div class="breadcrumb">
+      <a href="index.html">Beranda</a> <span>/</span> <span>Produk</span>
+    </div>
+  </section>
+
+  <!-- PRODUCTS PAGE -->
+  <section class="products-page">
+    <div class="container">
+      <div class="products-layout">
+
+        <!-- Sidebar Filter -->
+        <aside class="filter-sidebar">
+          <h3>🔍 Filter Produk</h3>
+
+          <div class="filter-group">
+            <h4>Kategori</h4>
+            <label class="filter-option">
+              <input type="checkbox" data-filter-cat value="sosis" /> Sosis 🌭
+            </label>
+            <label class="filter-option">
+              <input type="checkbox" data-filter-cat value="nugget" /> Nugget 🍗
+            </label>
+            <label class="filter-option">
+              <input type="checkbox" data-filter-cat value="bakso" /> Bakso 🍲
+            </label>
+            <label class="filter-option">
+              <input type="checkbox" data-filter-cat value="frozen" /> Frozen Food 🧊
+            </label>
+            <label class="filter-option">
+              <input type="checkbox" data-filter-cat value="snack" /> Snack 🍟
+            </label>
+          </div>
+
+          <div class="filter-group">
+            <h4>Tersedia</h4>
+            <label class="filter-option">
+              <input type="checkbox" /> Stok Tersedia
+            </label>
+            <label class="filter-option">
+              <input type="checkbox" /> Produk Baru
+            </label>
+            <label class="filter-option">
+              <input type="checkbox" /> Promo &amp; Diskon
+            </label>
+          </div>
+        </aside>
+
+        <!-- Product Grid -->
+        <div class="products-main">
+          <div class="sort-bar">
+            <span style="font-size:.9rem;color:var(--gray);">Menampilkan <strong>12</strong> produk</span>
+            <select aria-label="Urutkan produk">
+              <option>Urutkan: Terpopuler</option>
+              <option>Harga: Rendah ke Tinggi</option>
+              <option>Harga: Tinggi ke Rendah</option>
+              <option>Terbaru</option>
+            </select>
+          </div>
+
+          <div class="product-grid">
+
+            <!-- Sosis -->
+            <div class="product-card" data-category="sosis">
+              <div class="product-img-wrap">
+                <div class="img-placeholder"><div class="ph-icon">🌭</div><div class="ph-text">Foto Produk</div></div>
+                <span class="product-badge">Terlaris</span>
+              </div>
+              <div class="product-info">
+                <h3>Sosis Ayam Original</h3>
+                <p>Sosis ayam lembut bumbu rempah, 10 pcs / pack.</p>
+                <div class="product-footer">
+                  <span class="product-price">Rp [Harga]</span>
+                  <button class="add-cart">+ Keranjang</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="product-card" data-category="sosis">
+              <div class="product-img-wrap">
+                <div class="img-placeholder"><div class="ph-icon">🌭</div><div class="ph-text">Foto Produk</div></div>
+                <span class="product-badge new">Baru</span>
+              </div>
+              <div class="product-info">
+                <h3>Sosis Sapi Spesial</h3>
+                <p>Sosis sapi premium, gurih dan kenyal, 10 pcs / pack.</p>
+                <div class="product-footer">
+                  <span class="product-price">Rp [Harga]</span>
+                  <button class="add-cart">+ Keranjang</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="product-card" data-category="sosis">
+              <div class="product-img-wrap">
+                <div class="img-placeholder"><div class="ph-icon">🌭</div><div class="ph-text">Foto Produk</div></div>
+              </div>
+              <div class="product-info">
+                <h3>Sosis Bakar Mini</h3>
+                <p>Cocok untuk dipanggang, BBQ, atau digoreng. 20 pcs / pack.</p>
+                <div class="product-footer">
+                  <span class="product-price">Rp [Harga]</span>
+                  <button class="add-cart">+ Keranjang</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Nugget -->
+            <div class="product-card" data-category="nugget">
+              <div class="product-img-wrap">
+                <div class="img-placeholder"><div class="ph-icon">🍗</div><div class="ph-text">Foto Produk</div></div>
+              </div>
+              <div class="product-info">
+                <h3>Nugget Ayam Crispy</h3>
+                <p>Nugget ayam renyah, lembut di dalam. 500g / pack.</p>
+                <div class="product-footer">
+                  <span class="product-price">Rp [Harga]</span>
+                  <button class="add-cart">+ Keranjang</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="product-card" data-category="nugget">
+              <div class="product-img-wrap">
+                <div class="img-placeholder"><div class="ph-icon">🍗</div><div class="ph-text">Foto Produk</div></div>
+                <span class="product-badge new">Baru</span>
+              </div>
+              <div class="product-info">
+                <h3>Nugget Ikan</h3>
+                <p>Nugget ikan segar bergizi, pilihan sehat untuk anak. 400g / pack.</p>
+                <div class="product-footer">
+                  <span class="product-price">Rp [Harga]</span>
+                  <button class="add-cart">+ Keranjang</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Bakso -->
+            <div class="product-card" data-category="bakso">
+              <div class="product-img-wrap">
+                <div class="img-placeholder"><div class="ph-icon">🍲</div><div class="ph-text">Foto Produk</div></div>
+                <span class="product-badge">Favorit</span>
+              </div>
+              <div class="product-info">
+                <h3>Bakso Sapi Jumbo</h3>
+                <p>Bakso sapi ukuran jumbo dari daging pilihan. 500g / pack.</p>
+                <div class="product-footer">
+                  <span class="product-price">Rp [Harga]</span>
+                  <button class="add-cart">+ Keranjang</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="product-card" data-category="bakso">
+              <div class="product-img-wrap">
+                <div class="img-placeholder"><div class="ph-icon">🍲</div><div class="ph-text">Foto Produk</div></div>
+              </div>
+              <div class="product-info">
+                <h3>Bakso Urat Kenyal</h3>
+                <p>Bakso berurat, tekstur kenyal khas, cocok untuk berbagai masakan.</p>
+                <div class="product-footer">
+                  <span class="product-price">Rp [Harga]</span>
+                  <button class="add-cart">+ Keranjang</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Frozen Food -->
+            <div class="product-card" data-category="frozen">
+              <div class="product-img-wrap">
+                <div class="img-placeholder"><div class="ph-icon">🧊</div><div class="ph-text">Foto Produk</div></div>
+              </div>
+              <div class="product-info">
+                <h3>Dimsum Frozen Mix</h3>
+                <p>Paket dimsum siap kukus — siomay, hakau, lumpia mini.</p>
+                <div class="product-footer">
+                  <span class="product-price">Rp [Harga]</span>
+                  <button class="add-cart">+ Keranjang</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="product-card" data-category="frozen">
+              <div class="product-img-wrap">
+                <div class="img-placeholder"><div class="ph-icon">🧊</div><div class="ph-text">Foto Produk</div></div>
+                <span class="product-badge new">Baru</span>
+              </div>
+              <div class="product-info">
+                <h3>Otak-Otak Beku</h3>
+                <p>Otak-otak ikan gurih, tinggal bakar atau goreng. 300g / pack.</p>
+                <div class="product-footer">
+                  <span class="product-price">Rp [Harga]</span>
+                  <button class="add-cart">+ Keranjang</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Snack -->
+            <div class="product-card" data-category="snack">
+              <div class="product-img-wrap">
+                <div class="img-placeholder"><div class="ph-icon">🍟</div><div class="ph-text">Foto Produk</div></div>
+              </div>
+              <div class="product-info">
+                <h3>Kentang Goreng Beku</h3>
+                <p>Kentang beku siap goreng, renyah dan lezat. 1 kg / pack.</p>
+                <div class="product-footer">
+                  <span class="product-price">Rp [Harga]</span>
+                  <button class="add-cart">+ Keranjang</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="product-card" data-category="snack">
+              <div class="product-img-wrap">
+                <div class="img-placeholder"><div class="ph-icon">🍟</div><div class="ph-text">Foto Produk</div></div>
+                <span class="product-badge">Promo</span>
+              </div>
+              <div class="product-info">
+                <h3>Tempura Udang</h3>
+                <p>Tempura udang crispy berlapis tepung renyah. 300g / pack.</p>
+                <div class="product-footer">
+                  <span class="product-price">Rp [Harga]</span>
+                  <button class="add-cart">+ Keranjang</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="product-card" data-category="snack">
+              <div class="product-img-wrap">
+                <div class="img-placeholder"><div class="ph-icon">🍟</div><div class="ph-text">Foto Produk</div></div>
+              </div>
+              <div class="product-info">
+                <h3>Cireng Beku Aneka Rasa</h3>
+                <p>Cireng isi aneka rasa — keju, pedas, original. 250g / pack.</p>
+                <div class="product-footer">
+                  <span class="product-price">Rp [Harga]</span>
+                  <button class="add-cart">+ Keranjang</button>
+                </div>
+              </div>
+            </div>
+
+          </div><!-- /product-grid -->
+        </div><!-- /products-main -->
+      </div><!-- /products-layout -->
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="logo">
+            <div style="width:44px;height:44px;background:var(--primary);border-radius:8px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:900;font-size:1.3rem;flex-shrink:0;">K</div>
+            <div class="logo-text">
+              <span class="logo-name">KUSTINI STORE</span>
+              <span class="logo-tagline">Makanan Lezat &amp; Segar</span>
+            </div>
+          </div>
+          <p>Toko makanan pilihan dengan produk berkualitas tinggi, halal, dan harga terjangkau.</p>
+          <div class="social-links">
+            <a href="#" title="WhatsApp">💬</a>
+            <a href="#" title="Instagram">📸</a>
+            <a href="#" title="Facebook">👍</a>
+            <a href="#" title="TikTok">🎵</a>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h4>Menu</h4>
+          <ul>
+            <li><a href="index.html">Beranda</a></li>
+            <li><a href="produk.html">Produk</a></li>
+            <li><a href="tentang.html">Tentang Kami</a></li>
+            <li><a href="kontak.html">Kontak</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Kategori</h4>
+          <ul>
+            <li><a href="produk.html?cat=sosis">Sosis</a></li>
+            <li><a href="produk.html?cat=nugget">Nugget</a></li>
+            <li><a href="produk.html?cat=bakso">Bakso</a></li>
+            <li><a href="produk.html?cat=frozen">Frozen Food</a></li>
+            <li><a href="produk.html?cat=snack">Snack</a></li>
+          </ul>
+        </div>
+        <div class="footer-col footer-contact">
+          <h4>Hubungi Kami</h4>
+          <p>📞 +62 [Nomor Telepon]</p>
+          <p>📧 [Email Anda]</p>
+          <p>📍 [Alamat Toko]</p>
+          <p>⏰ Senin–Sabtu, 08.00–20.00</p>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>&copy; 2025 KUSTINI STORE. Semua hak dilindungi.</span>
+        <span>Dibuat dengan ❤️ untuk pelanggan setia kami</span>
+      </div>
+    </div>
+  </footer>
+
+  <div class="toast-container"></div>
+  <script src="js/main.js"></script>
+</body>
+</html>
