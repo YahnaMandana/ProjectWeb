@@ -171,13 +171,14 @@ function initContactForm() {
     const subjek  = form.querySelector('#subjek')?.value || '-';
     const pesan   = form.querySelector('#pesan')?.value.trim() || '-';
 
+    const escapeMd = s => s.replace(/[_*[\]()~`>#+\-=|{}.!\\]/g, '\\$&');
     const text =
       `📩 *Pesan Baru dari Website Warung Kustini*\n\n` +
-      `👤 *Nama:* ${name}\n` +
-      `📧 *Email:* ${email}\n` +
-      `📞 *Telepon:* ${telepon}\n` +
-      `📌 *Subjek:* ${subjek}\n` +
-      `💬 *Pesan:*\n${pesan}`;
+      `👤 *Nama:* ${escapeMd(name)}\n` +
+      `📧 *Email:* ${escapeMd(email)}\n` +
+      `📞 *Telepon:* ${escapeMd(telepon)}\n` +
+      `📌 *Subjek:* ${escapeMd(subjek)}\n` +
+      `💬 *Pesan:*\n${escapeMd(pesan)}`;
 
     const submitBtn = form.querySelector('button[type="submit"]');
     if (submitBtn) submitBtn.disabled = true;
