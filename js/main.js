@@ -169,7 +169,6 @@ function initContactForm() {
     e.preventDefault();
 
     const name    = form.querySelector('#nama')?.value.trim() || '-';
-    const email   = form.querySelector('#email')?.value.trim() || '-';
     const telepon = form.querySelector('#telepon')?.value.trim() || '-';
     const subjek  = form.querySelector('#subjek')?.value || '-';
     const pesan   = form.querySelector('#pesan')?.value.trim() || '-';
@@ -178,7 +177,6 @@ function initContactForm() {
     const text =
       `📩 *Pesan Baru dari Website Warung Kustini*\n\n` +
       `👤 *Nama:* ${escapeMd(name)}\n` +
-      `📧 *Email:* ${escapeMd(email)}\n` +
       `📞 *Telepon:* ${escapeMd(telepon)}\n` +
       `📌 *Subjek:* ${escapeMd(subjek)}\n` +
       `💬 *Pesan:*\n${escapeMd(pesan)}`;
