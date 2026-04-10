@@ -1270,6 +1270,95 @@ ul { list-style: none; }
 }
 
 /* =====================================================
+   LIVE CLOCK WIDGET
+   ===================================================== */
+.live-clock {
+  position: fixed;
+  bottom: 28px;
+  left: 28px;
+  z-index: 999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+  color: #fff;
+  border-radius: 18px;
+  padding: 10px 18px 8px;
+  box-shadow:
+    0 0 0 2px rgba(232, 69, 30, 0.4),
+    0 0 18px rgba(232, 69, 30, 0.35),
+    0 8px 32px rgba(0, 0, 0, 0.35);
+  animation: clockPulseGlow 2.5s ease-in-out infinite;
+  cursor: default;
+  user-select: none;
+  min-width: 100px;
+}
+
+.live-clock-icon {
+  font-size: 1.25rem;
+  animation: clockTickSpin 60s steps(60, end) infinite;
+  line-height: 1;
+}
+
+.live-clock-time {
+  font-size: 1.15rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  font-variant-numeric: tabular-nums;
+  background: linear-gradient(90deg, #f9a825, #e8451e, #ff6b35);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: clockGradientShift 3s linear infinite;
+  text-shadow: none;
+}
+
+.live-clock-label {
+  font-size: 0.6rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.55);
+  font-weight: 600;
+}
+
+@keyframes clockPulseGlow {
+  0%, 100% {
+    box-shadow:
+      0 0 0 2px rgba(232, 69, 30, 0.4),
+      0 0 18px rgba(232, 69, 30, 0.35),
+      0 8px 32px rgba(0, 0, 0, 0.35);
+  }
+  50% {
+    box-shadow:
+      0 0 0 3px rgba(249, 168, 37, 0.5),
+      0 0 30px rgba(249, 168, 37, 0.45),
+      0 8px 32px rgba(0, 0, 0, 0.35);
+  }
+}
+
+@keyframes clockGradientShift {
+  0%   { background-position: 0% center; }
+  100% { background-position: 200% center; }
+}
+
+@keyframes clockTickSpin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+@media (max-width: 480px) {
+  .live-clock {
+    bottom: 16px;
+    left: 16px;
+    padding: 8px 14px 6px;
+    min-width: 84px;
+  }
+  .live-clock-time { font-size: 1rem; }
+}
+
+/* =====================================================
    RESPONSIVE
    ===================================================== */
 @media (max-width: 900px) {

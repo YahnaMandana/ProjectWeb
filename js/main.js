@@ -30,6 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initCursorSparkle();
   initWAConfetti();
   initParticleBackground();
+  initLiveClock();
 });
 
 // =====================================================
@@ -532,4 +533,30 @@ function initParticleBackground() {
   }
 
   frame();
+}
+
+// =====================================================
+// Live Clock Widget (WIB — UTC+7)
+// =====================================================
+function initLiveClock() {
+  const display = document.getElementById('clockTime');
+  if (!display) return;
+
+  const clockIcon = document.querySelector('.live-clock-icon');
+  const clockIcons = ['🕐','🕑','🕒','🕓','🕔','🕕','🕖','🕗','🕘','🕙','🕚','🕛'];
+
+  function tick() {
+    // WIB = UTC+7
+    const now = new Date(new Date().getTime() + 7 * 60 * 60 * 1000);
+    const hh  = String(now.getUTCHours()).padStart(2, '0');
+    const mm  = String(now.getUTCMinutes()).padStart(2, '0');
+    const ss  = String(now.getUTCSeconds()).padStart(2, '0');
+    display.textContent = `${hh}:${mm}:${ss}`;
+    if (clockIcon) {
+      clockIcon.textContent = clockIcons[now.getUTCHours() % 12];
+    }
+  }
+
+  tick();
+  setInterval(tick, 1000);
 }
