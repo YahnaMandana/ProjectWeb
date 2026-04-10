@@ -26,6 +26,9 @@ document.addEventListener('DOMContentLoaded', () => {
   initBackToTop();
   initCounterAnimation();
   initRippleEffect();
+  initFloatingEmojis();
+  initCursorSparkle();
+  initWAConfetti();
 });
 
 // =====================================================
@@ -319,7 +322,16 @@ function animateCounter(el) {
     const ease = 1 - Math.pow(1 - progress, 3);
     const current = Math.round(ease * target);
     el.textContent = current + suffix;
-    if (progress < 1) requestAnimationFrame(step);
+    if (progress < 1) {
+      requestAnimationFrame(step);
+    } else {
+      // Pop the parent stat box when done
+      const stat = el.closest('.stat');
+      if (stat) {
+        stat.classList.add('counted');
+        setTimeout(() => stat.classList.remove('counted'), 500);
+      }
+    }
   }
 
   requestAnimationFrame(step);
@@ -342,4 +354,107 @@ function initRippleEffect() {
       setTimeout(() => ripple.remove(), 700);
     });
   });
+}
+
+// =====================================================
+// Floating Food Emojis in Hero
+// =====================================================
+function initFloatingEmojis() {
+  const container = document.getElementById('floatingContainer');
+  if (!container) return;
+
+  const emojis = ['🌭','🥛','🍡','⭐','✨','🎉','🍬','🎈','💫','🌟','🍭','❤️'];
+  const count = 14;
+
+  for (let i = 0; i < count; i++) {
+    spawnEmoji(container, emojis);
+  }
+
+  // Keep spawning every 2.5 s so the stream never stops
+  setInterval(() => spawnEmoji(container, emojis), 2500);
+}
+
+function spawnEmoji(container, emojis) {
+  const el = document.createElement('span');
+  el.className = 'floating-emoji';
+  el.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+
+  const size = 1.2 + Math.random() * 1.2;
+  const left = Math.random() * 95;
+  const dur  = 6 + Math.random() * 8;
+  const delay = Math.random() * 4;
+
+  el.style.cssText = `left:${left}%;bottom:-60px;font-size:${size}rem;animation-duration:${dur}s;animation-delay:${delay}s;`;
+  container.appendChild(el);
+  setTimeout(() => el.remove(), (dur + delay + 0.5) * 1000);
+}
+
+// =====================================================
+// Cursor Sparkle Trail
+// =====================================================
+function initCursorSparkle() {
+  const colors = ['#e8451e','#f9a825','#27ae60','#3498db','#9b59b6','#ff6b35'];
+  let lastX = 0, lastY = 0;
+  let throttle = false;
+
+  document.addEventListener('mousemove', (e) => {
+    if (throttle) return;
+    throttle = true;
+    setTimeout(() => { throttle = false; }, 60);
+
+    const dx = e.clientX - lastX;
+    const dy = e.clientY - lastY;
+    if (Math.abs(dx) < 5 && Math.abs(dy) < 5) return;
+    lastX = e.clientX;
+    lastY = e.clientY;
+
+    for (let i = 0; i < 3; i++) {
+      const dot = document.createElement('div');
+      dot.className = 'sparkle-dot';
+      const size = 6 + Math.random() * 8;
+      const angle = Math.random() * Math.PI * 2;
+      const dist  = 20 + Math.random() * 30;
+      dot.style.cssText = [
+        `width:${size}px`, `height:${size}px`,
+        `left:${e.clientX - size / 2}px`, `top:${e.clientY - size / 2}px`,
+        `background:${colors[Math.floor(Math.random() * colors.length)]}`,
+        `--dx:${Math.cos(angle) * dist}px`, `--dy:${Math.sin(angle) * dist}px`,
+        `animation-duration:${0.4 + Math.random() * 0.4}s`,
+      ].join(';');
+      document.body.appendChild(dot);
+      setTimeout(() => dot.remove(), 900);
+    }
+  });
+}
+
+// =====================================================
+// Confetti Burst on WhatsApp Button Click
+// =====================================================
+function initWAConfetti() {
+  document.querySelectorAll('.add-cart').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      burstConfetti(e.clientX, e.clientY);
+    });
+  });
+}
+
+function burstConfetti(cx, cy) {
+  const colors = ['#e8451e','#f9a825','#27ae60','#3498db','#9b59b6','#ff6b35','#ffffff'];
+  for (let i = 0; i < 28; i++) {
+    const el = document.createElement('div');
+    el.className = 'confetti-piece';
+    const angle = (Math.PI * 2 * i) / 28 + (Math.random() - .5) * .5;
+    const dist  = 60 + Math.random() * 80;
+    const dur   = 0.8 + Math.random() * 0.7;
+    const rot   = (Math.random() - .5) * 720 + 'deg';
+    el.style.cssText = [
+      `left:${cx}px`, `top:${cy}px`,
+      `background:${colors[Math.floor(Math.random() * colors.length)]}`,
+      `--tx:${Math.cos(angle) * dist}px`, `--ty:${Math.sin(angle) * dist}px`,
+      `--rot:${rot}`, `--dur:${dur}s`,
+      `width:${6 + Math.random() * 6}px`, `height:${6 + Math.random() * 6}px`,
+    ].join(';');
+    document.body.appendChild(el);
+    setTimeout(() => el.remove(), (dur + 0.1) * 1000);
+  }
 }
