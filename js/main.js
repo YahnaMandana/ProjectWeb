@@ -29,6 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initFloatingEmojis();
   initCursorSparkle();
   initWAConfetti();
+  initParticleBackground();
 });
 
 // =====================================================
@@ -455,4 +456,80 @@ function burstConfetti(cx, cy) {
     document.body.appendChild(el);
     setTimeout(() => el.remove(), (dur + 0.1) * 1000);
   }
+}
+
+// =====================================================
+// Canvas Particle Network Background in Hero
+// =====================================================
+function initParticleBackground() {
+  const hero = document.querySelector('.hero');
+  if (!hero) return;
+
+  const canvas = document.createElement('canvas');
+  canvas.className = 'hero-particles';
+  hero.insertBefore(canvas, hero.firstChild);
+
+  const ctx = canvas.getContext('2d');
+  const pts = [];
+  const COUNT = 60;
+  const MAX_DIST = 130;
+
+  function resize() {
+    canvas.width  = hero.offsetWidth;
+    canvas.height = hero.offsetHeight;
+    pts.forEach(p => {
+      p.x = Math.min(p.x, canvas.width);
+      p.y = Math.min(p.y, canvas.height);
+    });
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  for (let i = 0; i < COUNT; i++) {
+    pts.push({
+      x:  Math.random() * canvas.width,
+      y:  Math.random() * canvas.height,
+      vx: (Math.random() - 0.5) * 0.55,
+      vy: (Math.random() - 0.5) * 0.55,
+      r:  1.2 + Math.random() * 2.2,
+    });
+  }
+
+  function frame() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    const W = canvas.width, H = canvas.height;
+
+    for (let i = 0; i < pts.length; i++) {
+      for (let j = i + 1; j < pts.length; j++) {
+        const dx = pts[i].x - pts[j].x;
+        const dy = pts[i].y - pts[j].y;
+        const d  = Math.hypot(dx, dy);
+        if (d < MAX_DIST) {
+          ctx.beginPath();
+          ctx.strokeStyle = `rgba(255,255,255,${0.18 * (1 - d / MAX_DIST)})`;
+          ctx.lineWidth = 0.8;
+          ctx.moveTo(pts[i].x, pts[i].y);
+          ctx.lineTo(pts[j].x, pts[j].y);
+          ctx.stroke();
+        }
+      }
+    }
+
+    pts.forEach(p => {
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(255,255,255,0.55)';
+      ctx.fill();
+      p.x += p.vx;
+      p.y += p.vy;
+      if (p.x < 0) { p.x = 0; p.vx *= -1; }
+      if (p.x > W) { p.x = W; p.vx *= -1; }
+      if (p.y < 0) { p.y = 0; p.vy *= -1; }
+      if (p.y > H) { p.y = H; p.vy *= -1; }
+    });
+
+    requestAnimationFrame(frame);
+  }
+
+  frame();
 }
