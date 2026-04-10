@@ -29,7 +29,6 @@ Cari teks berikut di semua halaman HTML dan ganti dengan data Anda:
 | Teks Placeholder | Ganti Dengan |
 |---|---|
 | `+62 [Nomor Telepon Anda]` | Nomor HP / WhatsApp toko |
-| `[Email Anda]` | Alamat email toko |
 | `[Alamat Toko]` / `[Alamat Lengkap...]` | Alamat fisik toko |
 | `Rp [Harga]` | Harga setiap produk |
 | `https://wa.me/628XXXXXXXXXX` | Link WhatsApp Anda |
