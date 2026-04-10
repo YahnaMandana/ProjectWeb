@@ -2,6 +2,14 @@
 // KUSTINI STORE — Main JavaScript
 // =====================================================
 
+// =====================================================
+// Telegram Bot Configuration
+// Ganti nilai berikut dengan token bot dan chat ID owner
+// JANGAN commit token asli ke repositori publik
+// =====================================================
+const TELEGRAM_BOT_TOKEN = '8526195679:AAH--icxmjSatH2vj3AIbUDC-5mw6bwH6i0';
+const TELEGRAM_OWNER_CHAT_ID = '358455215';
+
 // ---------- Cart State ----------
 let cartCount = 0;
 
@@ -154,15 +162,52 @@ function initContactForm() {
   const form = document.getElementById('contactForm');
   if (!form) return;
 
-  form.addEventListener('submit', (e) => {
+  form.addEventListener('submit', async (e) => {
     e.preventDefault();
-    const name = form.querySelector('#nama')?.value.trim();
 
-    // Placeholder: ganti blok ini dengan logika pengiriman formulir yang
-    // sesungguhnya (misalnya fetch/POST ke server atau layanan email pihak
-    // ketiga seperti Formspree, EmailJS, dsb.) sebelum dipublikasikan.
-    showToast(`Terima kasih ${name || 'kamu'}! Pesan Anda telah dikirim. 🎉`, 'success');
-    form.reset();
+    const name    = form.querySelector('#nama')?.value.trim() || '-';
+    const email   = form.querySelector('#email')?.value.trim() || '-';
+    const telepon = form.querySelector('#telepon')?.value.trim() || '-';
+    const subjek  = form.querySelector('#subjek')?.value || '-';
+    const pesan   = form.querySelector('#pesan')?.value.trim() || '-';
+
+    const escapeMd = s => s.replace(/[_*[\]()~`>#+\-=|{}.!\\]/g, '\\$&');
+    const text =
+      `📩 *Pesan Baru dari Website Warung Kustini*\n\n` +
+      `👤 *Nama:* ${escapeMd(name)}\n` +
+      `📧 *Email:* ${escapeMd(email)}\n` +
+      `📞 *Telepon:* ${escapeMd(telepon)}\n` +
+      `📌 *Subjek:* ${escapeMd(subjek)}\n` +
+      `💬 *Pesan:*\n${escapeMd(pesan)}`;
+
+    const submitBtn = form.querySelector('button[type="submit"]');
+    if (submitBtn) submitBtn.disabled = true;
+
+    try {
+      const res = await fetch(
+        `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`,
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            chat_id: TELEGRAM_OWNER_CHAT_ID,
+            text,
+            parse_mode: 'Markdown',
+          }),
+        }
+      );
+
+      if (res.ok) {
+        showToast(`Terima kasih ${name}! Pesan Anda telah dikirim. 🎉`, 'success');
+        form.reset();
+      } else {
+        showToast('Gagal mengirim pesan. Silakan coba lagi.', 'error');
+      }
+    } catch {
+      showToast('Gagal mengirim pesan. Periksa koneksi internet Anda.', 'error');
+    } finally {
+      if (submitBtn) submitBtn.disabled = false;
+    }
   });
 }
 
