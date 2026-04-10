@@ -1035,6 +1035,175 @@ ul { list-style: none; }
 }
 
 /* =====================================================
+   FLOATING FOOD EMOJIS IN HERO
+   ===================================================== */
+.floating-emoji {
+  position: absolute;
+  font-size: 1.6rem;
+  pointer-events: none;
+  animation: floatEmoji linear infinite;
+  opacity: 0;
+  z-index: 0;
+  user-select: none;
+}
+@keyframes floatEmoji {
+  0%   { transform: translateY(0) rotate(0deg) scale(.8);  opacity: 0; }
+  10%  { opacity: .65; }
+  80%  { opacity: .55; }
+  100% { transform: translateY(-100vh) rotate(360deg) scale(1); opacity: 0; }
+}
+
+/* =====================================================
+   HERO ENTRANCE ANIMATION
+   ===================================================== */
+.hero-content {
+  animation: heroEntrance .9s cubic-bezier(.22,1,.36,1) both;
+}
+@keyframes heroEntrance {
+  from { opacity: 0; transform: translateY(40px) scale(.96); }
+  to   { opacity: 1; transform: translateY(0)    scale(1); }
+}
+
+/* =====================================================
+   BOUNCE CTA BUTTONS IN HERO
+   ===================================================== */
+.hero-buttons .btn-secondary {
+  animation: bouncePulse 2.4s ease-in-out infinite;
+}
+@keyframes bouncePulse {
+  0%, 100% { transform: translateY(0); }
+  45%       { transform: translateY(-6px); }
+  65%       { transform: translateY(-2px); }
+}
+.hero-buttons .btn-secondary:hover { animation: none; }
+
+/* =====================================================
+   CATEGORY ICON — WIGGLE ON HOVER
+   ===================================================== */
+.category-card:hover .category-icon {
+  animation: wiggle .5s ease;
+}
+@keyframes wiggle {
+  0%,100% { transform: rotate(0deg); }
+  20%     { transform: rotate(-18deg) scale(1.2); }
+  40%     { transform: rotate(14deg)  scale(1.25); }
+  60%     { transform: rotate(-10deg) scale(1.2); }
+  80%     { transform: rotate(8deg)   scale(1.15); }
+}
+
+/* =====================================================
+   CURSOR SPARKLE
+   ===================================================== */
+.sparkle-dot {
+  position: fixed;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  animation: sparkleFade .6s ease-out forwards;
+}
+@keyframes sparkleFade {
+  0%   { transform: scale(1) translate(0, 0);   opacity: 1; }
+  100% { transform: scale(0) translate(var(--dx), var(--dy)); opacity: 0; }
+}
+
+/* =====================================================
+   STAT BOX — POP ON COUNT-UP COMPLETE
+   ===================================================== */
+.stat.counted .stat-num {
+  animation: statPop .4s cubic-bezier(.36,.07,.19,.97) both;
+}
+@keyframes statPop {
+  0%   { transform: scale(1); }
+  40%  { transform: scale(1.35); color: var(--accent); }
+  100% { transform: scale(1); }
+}
+
+/* =====================================================
+   PRODUCT CARD — RAINBOW GLOW BORDER ON HOVER
+   ===================================================== */
+.product-card {
+  border: 2px solid transparent;
+  background-clip: padding-box;
+  position: relative;
+}
+.product-card::after {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: calc(var(--radius) + 2px);
+  background: linear-gradient(135deg, var(--primary), var(--accent), #27ae60, var(--primary));
+  background-size: 300% 300%;
+  z-index: -1;
+  opacity: 0;
+  transition: opacity .35s ease;
+  animation: rainbowBorder 3s ease infinite;
+}
+.product-card:hover::after { opacity: 1; }
+@keyframes rainbowBorder {
+  0%,100% { background-position: 0% 50%; }
+  50%     { background-position: 100% 50%; }
+}
+
+/* =====================================================
+   WHATSAPP BUTTON — SHINE SWEEP
+   ===================================================== */
+.add-cart {
+  position: relative;
+  overflow: hidden;
+}
+.add-cart::after {
+  content: '';
+  position: absolute;
+  top: 0; left: -75%;
+  width: 50%; height: 100%;
+  background: linear-gradient(120deg, rgba(255,255,255,0) 30%, rgba(255,255,255,.45) 50%, rgba(255,255,255,0) 70%);
+  transform: skewX(-15deg);
+  animation: shineSweep 2.8s ease-in-out infinite;
+}
+@keyframes shineSweep {
+  0%   { left: -75%; }
+  60%, 100% { left: 125%; }
+}
+
+/* =====================================================
+   CONFETTI BURST
+   ===================================================== */
+.confetti-piece {
+  position: fixed;
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+  pointer-events: none;
+  z-index: 9999;
+  animation: confettiFall var(--dur, 1.2s) ease-out forwards;
+}
+@keyframes confettiFall {
+  0%   { transform: translate(0,0) rotate(0deg) scale(1);   opacity: 1; }
+  100% { transform: translate(var(--tx), var(--ty)) rotate(var(--rot)) scale(.4); opacity: 0; }
+}
+
+/* =====================================================
+   FUN TICKER / PROMO MARQUEE
+   ===================================================== */
+.promo-ticker {
+  background: var(--accent);
+  color: var(--dark);
+  font-weight: 700;
+  font-size: .88rem;
+  overflow: hidden;
+  white-space: nowrap;
+  padding: 8px 0;
+}
+.promo-ticker-inner {
+  display: inline-block;
+  animation: tickerScroll 20s linear infinite;
+}
+@keyframes tickerScroll {
+  from { transform: translateX(100vw); }
+  to   { transform: translateX(-100%); }
+}
+
+/* =====================================================
    RESPONSIVE
    ===================================================== */
 @media (max-width: 900px) {
