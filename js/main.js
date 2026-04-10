@@ -30,6 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initCursorSparkle();
   initWAConfetti();
   initParticleBackground();
+  initLiveClock();
 });
 
 // =====================================================
@@ -532,4 +533,43 @@ function initParticleBackground() {
   }
 
   frame();
+}
+
+// =====================================================
+// Live Clock Widget (WIB — UTC+7)
+// =====================================================
+function initLiveClock() {
+  const display = document.getElementById('clockTime');
+  if (!display) return;
+
+  const clockIcon = document.querySelector('.live-clock-icon');
+  const clockIcons = ['🕛','🕐','🕑','🕒','🕓','🕔','🕕','🕖','🕗','🕘','🕙','🕚'];
+  const fmt = new Intl.DateTimeFormat('id-ID', {
+    timeZone: 'Asia/Jakarta',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+    hour12: false,
+  });
+
+  const clockIntervalId = setInterval(() => {
+    const parts = {};
+    fmt.formatToParts(new Date()).forEach(({ type, value }) => { parts[type] = value; });
+    display.textContent = `${parts.hour}:${parts.minute}:${parts.second}`;
+    if (clockIcon) {
+      const h = parseInt(parts.hour, 10) % 12;
+      clockIcon.textContent = clockIcons[h];
+    }
+  }, 1000);
+
+  // Run immediately so the clock shows at once
+  const parts = {};
+  fmt.formatToParts(new Date()).forEach(({ type, value }) => { parts[type] = value; });
+  display.textContent = `${parts.hour}:${parts.minute}:${parts.second}`;
+  if (clockIcon) {
+    const h = parseInt(parts.hour, 10) % 12;
+    clockIcon.textContent = clockIcons[h];
+  }
+
+  return clockIntervalId;
 }
