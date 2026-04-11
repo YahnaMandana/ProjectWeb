@@ -413,26 +413,70 @@
   <div class="sumenep-modal-overlay" id="sumenepModalOverlay" role="dialog" aria-modal="true" aria-label="Info Sumenep">
     <div class="sumenep-modal">
       <button class="sumenep-modal-close" id="sumenepModalClose" aria-label="Tutup">✕</button>
+
+      <!-- Header with particle canvas -->
       <div class="sumenep-modal-header">
-        <span class="sumenep-modal-badge">📍 Sumenep, Jawa Timur</span>
-        <h2>Info Sumenep</h2>
+        <canvas class="sumenep-particles" id="sumenepParticles" aria-hidden="true"></canvas>
+        <div class="sumenep-header-content">
+          <div class="sumenep-header-icon">🗺️</div>
+          <span class="sumenep-modal-badge">📍 Sumenep, Jawa Timur</span>
+          <h2>Info Sumenep</h2>
+          <p class="sumenep-header-sub">Kabupaten Kepulauan Paling Timur Jawa Timur</p>
+        </div>
       </div>
+
       <div class="sumenep-modal-body">
+
+        <!-- Clock section -->
         <div class="sumenep-time-section">
-          <div class="sumenep-time-icon" id="sumenepClockIcon">🕐</div>
+          <div class="sumenep-time-label">🕐 Waktu Sekarang — WIB</div>
           <div class="sumenep-time-display" id="sumenepTimeDisplay">00:00:00</div>
           <div class="sumenep-time-meta">
             <span id="sumenepDateDisplay">Memuat tanggal…</span>
-            <span class="sumenep-timezone">WIB (UTC+7)</span>
+            <span class="sumenep-timezone">UTC+7 · Waktu Indonesia Barat</span>
           </div>
         </div>
-        <div class="sumenep-weather-section">
-          <h3>🌤️ Cuaca Sumenep</h3>
-          <div id="sumenepWeatherContent"></div>
-          <button class="btn btn-primary" id="sumenepCekCuacaBtn" style="margin-top:12px;">🌦️ Cek Cuaca</button>
+
+        <!-- Quick stats -->
+        <div class="sumenep-stats-grid">
+          <div class="sumenep-stat-tile">
+            <div class="sumenep-stat-icon">🏝️</div>
+            <div class="sumenep-stat-val">126</div>
+            <div class="sumenep-stat-key">Pulau</div>
+          </div>
+          <div class="sumenep-stat-tile">
+            <div class="sumenep-stat-icon">🏘️</div>
+            <div class="sumenep-stat-val">27</div>
+            <div class="sumenep-stat-key">Kecamatan</div>
+          </div>
+          <div class="sumenep-stat-tile">
+            <div class="sumenep-stat-icon">👥</div>
+            <div class="sumenep-stat-val">1,1 Jt</div>
+            <div class="sumenep-stat-key">Penduduk</div>
+          </div>
+          <div class="sumenep-stat-tile">
+            <div class="sumenep-stat-icon">🌊</div>
+            <div class="sumenep-stat-val">2.093</div>
+            <div class="sumenep-stat-key">km² Luas</div>
+          </div>
         </div>
-      </div>
-    </div>
+
+        <!-- Weather section -->
+        <div class="sumenep-weather-section">
+          <div class="sumenep-weather-header">
+            <h3>🌤️ Cuaca Sumenep</h3>
+            <button class="sumenep-refresh-btn" id="sumenepCekCuacaBtn" title="Muat ulang cuaca">↻</button>
+          </div>
+          <div id="sumenepWeatherContent">
+            <div class="sumenep-weather-empty">
+              <div class="sumenep-weather-empty-icon">🌤️</div>
+              <p>Tekan tombol muat ulang untuk memuat data cuaca terkini</p>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /body -->
+    </div><!-- /modal -->
   </div>
 
   <script src="js/main.js"></script>

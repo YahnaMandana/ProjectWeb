@@ -600,9 +600,10 @@ function initDotsMenu() {
 }
 
 // =====================================================
-// Sumenep Info Modal — Jam & Cuaca
+// Sumenep Info Modal — Jam & Cuaca (Premium)
 // =====================================================
 let _sumenepInterval = null;
+let _sumenepParticleRAF = null;
 
 function openSumenepModal() {
   const overlay = document.getElementById('sumenepModalOverlay');
@@ -615,6 +616,8 @@ function openSumenepModal() {
   if (!_sumenepInterval) {
     _sumenepInterval = setInterval(_updateSumenepTime, 1000);
   }
+  _startSumenepParticles();
+  _loadSumenepWeather();
 }
 
 function closeSumenepModal() {
@@ -626,12 +629,12 @@ function closeSumenepModal() {
     clearInterval(_sumenepInterval);
     _sumenepInterval = null;
   }
+  _stopSumenepParticles();
 }
 
 function _updateSumenepTime() {
   const timeEl = document.getElementById('sumenepTimeDisplay');
   const dateEl = document.getElementById('sumenepDateDisplay');
-  const iconEl = document.getElementById('sumenepClockIcon');
   if (!timeEl) return;
 
   const now = new Date();
@@ -646,18 +649,63 @@ function _updateSumenepTime() {
 
   const parts = {};
   timeFmt.formatToParts(now).forEach(({ type, value }) => { parts[type] = value; });
-  timeEl.textContent = `${parts.hour}:${parts.minute}:${parts.second}`;
+
+  // Render with animated colon spans
+  timeEl.innerHTML =
+    `${parts.hour}<span class="sm-colon">:</span>${parts.minute}<span class="sm-colon">:</span>${parts.second}`;
 
   if (dateEl) dateEl.textContent = dateFmt.format(now);
+}
 
-  if (iconEl) {
-    const icons = ['🕛','🕐','🕑','🕒','🕓','🕔','🕕','🕖','🕗','🕘','🕙','🕚'];
-    iconEl.textContent = icons[parseInt(parts.hour, 10) % 12];
+// ---------- Particle canvas ----------
+function _startSumenepParticles() {
+  const canvas = document.getElementById('sumenepParticles');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+
+  const header = canvas.parentElement;
+  canvas.width  = header.offsetWidth;
+  canvas.height = header.offsetHeight;
+
+  const PARTICLE_COUNT = 42;
+  const dots = Array.from({ length: PARTICLE_COUNT }, () => ({
+    x: Math.random() * canvas.width,
+    y: Math.random() * canvas.height,
+    r: Math.random() * 1.6 + .4,
+    dx: (Math.random() - .5) * .5,
+    dy: (Math.random() - .5) * .5,
+    alpha: Math.random() * .5 + .1,
+  }));
+
+  function drawFrame() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    dots.forEach(d => {
+      ctx.beginPath();
+      ctx.arc(d.x, d.y, d.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(144,224,239,${d.alpha})`;
+      ctx.fill();
+      d.x += d.dx; d.y += d.dy;
+      if (d.x < 0) d.x = canvas.width;
+      if (d.x > canvas.width) d.x = 0;
+      if (d.y < 0) d.y = canvas.height;
+      if (d.y > canvas.height) d.y = 0;
+    });
+    _sumenepParticleRAF = requestAnimationFrame(drawFrame);
+  }
+  _stopSumenepParticles();
+  drawFrame();
+}
+
+function _stopSumenepParticles() {
+  if (_sumenepParticleRAF) {
+    cancelAnimationFrame(_sumenepParticleRAF);
+    _sumenepParticleRAF = null;
   }
 }
 
 function _loadSumenepWeather() {
   const content = document.getElementById('sumenepWeatherContent');
+  const btn = document.getElementById('sumenepCekCuacaBtn');
   if (!content) return;
 
   content.textContent = '';
@@ -665,6 +713,7 @@ function _loadSumenepWeather() {
   loadEl.className = 'weather-loading';
   loadEl.textContent = '⏳ Memuat data cuaca…';
   content.appendChild(loadEl);
+  if (btn) btn.classList.add('loading');
 
   fetch('https://api.nexray.web.id/information/cuaca?kota=Sumenep')
     .then(res => {
@@ -717,8 +766,10 @@ function _loadSumenepWeather() {
           img.alt = cuaca;
           img.loading = 'lazy';
           img.addEventListener('error', () => {
-            imgWrap.textContent = '🌤️';
-            img.remove();
+            const placeholder = document.createElement('div');
+            placeholder.className = 'sumenep-forecast-img-placeholder';
+            placeholder.textContent = '🌤️';
+            imgWrap.replaceWith(placeholder);
           });
           imgWrap.appendChild(img);
         } else {
@@ -771,9 +822,11 @@ function _loadSumenepWeather() {
       content.textContent = '';
       const errEl = document.createElement('p');
       errEl.className = 'weather-error';
-      errEl.style.color = '#c62828';
       errEl.textContent = '⚠️ Info cuaca tidak tersedia saat ini.';
       content.appendChild(errEl);
+    })
+    .finally(() => {
+      if (btn) btn.classList.remove('loading');
     });
 }
 
