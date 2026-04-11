@@ -667,7 +667,8 @@ function _startSumenepParticles() {
   canvas.width  = header.offsetWidth;
   canvas.height = header.offsetHeight;
 
-  const dots = Array.from({ length: 42 }, () => ({
+  const PARTICLE_COUNT = 42;
+  const dots = Array.from({ length: PARTICLE_COUNT }, () => ({
     x: Math.random() * canvas.width,
     y: Math.random() * canvas.height,
     r: Math.random() * 1.6 + .4,
@@ -765,9 +766,10 @@ function _loadSumenepWeather() {
           img.alt = cuaca;
           img.loading = 'lazy';
           img.addEventListener('error', () => {
-            imgWrap.className = 'sumenep-forecast-img-placeholder';
-            imgWrap.textContent = '🌤️';
-            img.remove();
+            const placeholder = document.createElement('div');
+            placeholder.className = 'sumenep-forecast-img-placeholder';
+            placeholder.textContent = '🌤️';
+            imgWrap.replaceWith(placeholder);
           });
           imgWrap.appendChild(img);
         } else {
