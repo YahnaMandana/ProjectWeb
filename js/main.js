@@ -705,7 +705,7 @@ function initWeatherWidget() {
       // Build forecast items (show up to 4) using DOM methods to avoid XSS
       const parser = new DOMParser();
       dataEl.textContent = '';
-      forecasts.slice(0, 4).forEach(f => {
+      forecasts.slice(0, 2).forEach(f => {
         // Decode HTML entities from the API safely via DOMParser
         const decodeHtml = str => {
           const doc = parser.parseFromString(str || '', 'text/html');

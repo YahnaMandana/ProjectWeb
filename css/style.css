@@ -1274,82 +1274,51 @@ ul { list-style: none; }
    ===================================================== */
 .live-clock {
   position: fixed;
-  bottom: 28px;
-  left: 28px;
+  bottom: 20px;
+  left: 20px;
   z-index: 999;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
-  gap: 2px;
-  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+  gap: 5px;
+  background: rgba(15, 52, 96, 0.82);
   color: #fff;
-  border-radius: 18px;
-  padding: 10px 18px 8px;
-  box-shadow:
-    0 0 0 2px rgba(232, 69, 30, 0.4),
-    0 0 18px rgba(232, 69, 30, 0.35),
-    0 8px 32px rgba(0, 0, 0, 0.35);
-  animation: clockPulseGlow 2.5s ease-in-out infinite;
+  border-radius: 50px;
+  padding: 5px 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(6px);
   cursor: default;
   user-select: none;
-  min-width: 100px;
 }
 
 .live-clock-icon {
-  font-size: 1.25rem;
+  font-size: 0.85rem;
   line-height: 1;
 }
 
 .live-clock-time {
-  font-size: 1.15rem;
-  font-weight: 700;
-  letter-spacing: 2px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 1px;
   font-variant-numeric: tabular-nums;
-  background: linear-gradient(90deg, #f9a825, #e8451e, #ff6b35);
-  background-size: 200% auto;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  animation: clockGradientShift 3s linear infinite;
-  text-shadow: none;
+  color: #ffd54f;
 }
 
 .live-clock-label {
   font-size: 0.6rem;
-  letter-spacing: 3px;
+  letter-spacing: 1px;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.55);
-  font-weight: 600;
-}
-
-@keyframes clockPulseGlow {
-  0%, 100% {
-    box-shadow:
-      0 0 0 2px rgba(232, 69, 30, 0.4),
-      0 0 18px rgba(232, 69, 30, 0.35),
-      0 8px 32px rgba(0, 0, 0, 0.35);
-  }
-  50% {
-    box-shadow:
-      0 0 0 3px rgba(249, 168, 37, 0.5),
-      0 0 30px rgba(249, 168, 37, 0.45),
-      0 8px 32px rgba(0, 0, 0, 0.35);
-  }
-}
-
-@keyframes clockGradientShift {
-  0%   { background-position: 0% center; }
-  100% { background-position: 200% center; }
+  color: rgba(255, 255, 255, 0.5);
+  font-weight: 500;
 }
 
 @media (max-width: 480px) {
   .live-clock {
-    bottom: 16px;
-    left: 16px;
-    padding: 8px 14px 6px;
-    min-width: 84px;
+    bottom: 14px;
+    left: 14px;
+    padding: 4px 10px;
   }
-  .live-clock-time { font-size: 1rem; }
+  .live-clock-time { font-size: 0.78rem; }
 }
 
 /* =====================================================
@@ -1658,38 +1627,41 @@ ul { list-style: none; }
    WEATHER BAR — Cuaca Sumenep
    ===================================================== */
 .weather-bar {
-  background: linear-gradient(90deg, #1565c0 0%, #0288d1 50%, #039be5 100%);
+  background: rgba(2, 136, 209, 0.9);
   color: #fff;
-  font-size: .82rem;
+  font-size: .78rem;
   font-weight: 500;
   letter-spacing: .2px;
-  box-shadow: 0 2px 8px rgba(2,136,209,.3);
+  box-shadow: 0 1px 4px rgba(2,136,209,.25);
 }
 .weather-bar-inner {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 7px 20px;
+  padding: 4px 16px;
   display: flex;
   align-items: center;
-  gap: 18px;
-  flex-wrap: wrap;
+  gap: 12px;
+  flex-wrap: nowrap;
+  overflow: hidden;
 }
 .weather-bar-location {
   display: flex;
   align-items: center;
-  gap: 5px;
+  gap: 4px;
   white-space: nowrap;
-  opacity: .92;
+  opacity: .88;
+  flex-shrink: 0;
 }
-.weather-bar-icon { font-size: 1rem; }
+.weather-bar-icon { font-size: .85rem; }
 
 .weather-bar-data {
   flex: 1;
   display: flex;
   align-items: center;
-  flex-wrap: wrap;
-  gap: 14px;
+  flex-wrap: nowrap;
+  gap: 8px;
   min-width: 0;
+  overflow: hidden;
 }
 .weather-loading { opacity: .75; font-style: italic; }
 .weather-error   { opacity: .8; font-style: italic; color: #ffcdd2; }
@@ -1698,37 +1670,38 @@ ul { list-style: none; }
 .weather-item {
   display: flex;
   align-items: center;
-  gap: 6px;
-  background: rgba(255,255,255,.12);
+  gap: 4px;
+  background: rgba(255,255,255,.14);
   border-radius: 20px;
-  padding: 3px 11px;
+  padding: 2px 8px;
   white-space: nowrap;
   transition: background .2s;
+  flex-shrink: 0;
 }
 .weather-item:hover { background: rgba(255,255,255,.22); }
 .weather-item-img {
-  width: 22px;
-  height: 22px;
+  width: 18px;
+  height: 18px;
   object-fit: contain;
   flex-shrink: 0;
 }
 .weather-item-label {
-  font-size: .7rem;
+  font-size: .68rem;
   opacity: .75;
-  margin-right: 2px;
 }
-.weather-item-suhu { font-weight: 700; font-size: .88rem; }
-.weather-item-info { font-size: .78rem; opacity: .9; }
+.weather-item-suhu { font-weight: 700; font-size: .78rem; }
+.weather-item-info { font-size: .72rem; opacity: .88; }
 
 .weather-bar-time {
   white-space: nowrap;
-  opacity: .7;
-  font-size: .75rem;
+  opacity: .65;
+  font-size: .7rem;
   margin-left: auto;
+  flex-shrink: 0;
 }
 
 @media (max-width: 600px) {
-  .weather-bar-inner { gap: 10px; }
+  .weather-bar-inner { gap: 8px; padding: 3px 12px; }
   .weather-bar-time  { display: none; }
-  .weather-item      { padding: 3px 8px; font-size: .75rem; }
+  .weather-item      { padding: 2px 6px; font-size: .7rem; }
 }
