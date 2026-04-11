@@ -597,6 +597,28 @@ function initDotsMenu() {
   if (clockWidget) {
     clockWidget.addEventListener('click', openSumenepModal);
   }
+
+  // Dots menu (⋮) toggle
+  const dotsBtn = document.getElementById('dotsMenuBtn');
+  const dotsDropdown = document.getElementById('dotsDropdown');
+  if (dotsBtn && dotsDropdown) {
+    dotsBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      dotsDropdown.classList.toggle('open');
+    });
+    document.addEventListener('click', () => {
+      dotsDropdown.classList.remove('open');
+    });
+  }
+
+  // Dots menu → Cek Info Sumenep
+  const dotsInfoSumenep = document.getElementById('dotsInfoSumenep');
+  if (dotsInfoSumenep) {
+    dotsInfoSumenep.addEventListener('click', () => {
+      dotsDropdown?.classList.remove('open');
+      openSumenepModal();
+    });
+  }
 }
 
 // =====================================================
