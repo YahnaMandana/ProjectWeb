@@ -31,6 +31,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initWAConfetti();
   initParticleBackground();
   initLiveClock();
+  initCartModal();
 });
 
 // =====================================================
@@ -572,4 +573,97 @@ function initLiveClock() {
   }
 
   return clockIntervalId;
+}
+
+// =====================================================
+// Cart Quantity Modal (Sosis Mix)
+// =====================================================
+function initCartModal() {
+  const overlay   = document.getElementById('cartModalOverlay');
+  const closeBtn  = document.getElementById('cartModalClose');
+  const cancelBtn = document.getElementById('cartModalCancel');
+  const minusBtn  = document.getElementById('cartQtyMinus');
+  const plusBtn   = document.getElementById('cartQtyPlus');
+  const qtyDisplay   = document.getElementById('cartQtyDisplay');
+  const totalDisplay = document.getElementById('cartTotalDisplay');
+  const buyLink      = document.getElementById('cartModalBuy');
+
+  if (!overlay) return;
+
+  let currentProduct = 'Sosis Mix';
+  let pricePerItem   = 1000;
+  let quantity       = 1;
+
+  function formatRupiah(num) {
+    return 'Rp ' + num.toLocaleString('id-ID');
+  }
+
+  function buildWAText(product, qty, total) {
+    const totalFormatted = total.toLocaleString('id-ID');
+    return (
+      'Bu Kus, mau beli ' + product.toLowerCase() + ' nya ' +
+      qty + ' item, total Rp ' + totalFormatted + ' ya Bu Kus 😊'
+    );
+  }
+
+  function updateModal() {
+    const total = pricePerItem * quantity;
+    qtyDisplay.textContent   = quantity;
+    totalDisplay.textContent = formatRupiah(total);
+    const text = buildWAText(currentProduct, quantity, total);
+    buyLink.href = 'https://wa.me/6281807159805?text=' + encodeURIComponent(text);
+  }
+
+  function openModal(productName, price) {
+    currentProduct = productName;
+    pricePerItem   = price;
+    quantity       = 1;
+    document.getElementById('cartModalTitle').textContent = productName;
+    document.querySelector('.cart-modal-price-per strong').textContent =
+      formatRupiah(pricePerItem);
+    updateModal();
+    overlay.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeModal() {
+    overlay.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  // Open modal when clicking "Beli Sekarang" on Sosis Mix
+  document.querySelectorAll('.btn-open-cart').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      const product = btn.dataset.product || 'Sosis Mix';
+      const price   = parseInt(btn.dataset.price, 10) || 1000;
+      openModal(product, price);
+      burstConfetti(e.clientX, e.clientY);
+    });
+  });
+
+  // Quantity controls
+  minusBtn.addEventListener('click', () => {
+    if (quantity > 1) { quantity--; updateModal(); }
+  });
+  plusBtn.addEventListener('click', () => {
+    quantity++;
+    updateModal();
+  });
+
+  // Close actions
+  closeBtn.addEventListener('click', closeModal);
+  cancelBtn.addEventListener('click', closeModal);
+  overlay.addEventListener('click', (e) => {
+    if (e.target === overlay) closeModal();
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeModal();
+  });
+
+  // Track cart count when buy is clicked
+  buyLink.addEventListener('click', () => {
+    addToCart(currentProduct);
+    closeModal();
+  });
 }
