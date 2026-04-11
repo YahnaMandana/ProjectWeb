@@ -676,3 +676,48 @@ function initCartModal() {
     closeModal();
   });
 }
+
+// =====================================================
+// Weather Widget — Cuaca Sumenep
+// =====================================================
+function initWeatherWidget() {
+  const dataEl = document.getElementById('weatherData');
+  const timeEl = document.getElementById('weatherTime');
+  if (!dataEl) return;
+
+  fetch('https://api.nexray.web.id/information/cuaca?kota=Sumenep')
+    .then(res => {
+      if (!res.ok) throw new Error('Network error');
+      return res.json();
+    })
+    .then(json => {
+      if (!json.status || !json.result) throw new Error('Invalid data');
+
+      const forecasts = json.result.forecasts;
+      if (!forecasts || forecasts.length === 0) throw new Error('No forecast');
+
+      // Show timestamp if available
+      if (timeEl && json.timestamp) {
+        const ts = new Date(json.timestamp);
+        timeEl.textContent = 'Update: ' + ts.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', timeZone: 'Asia/Makassar' }) + ' WITA';
+      }
+
+      // Build forecast items (show up to 4)
+      const items = forecasts.slice(0, 4).map(f => {
+        const vis = f.visibilitas ? f.visibilitas.replace(/&gt;/g, '>') : '';
+        return `<div class="weather-item" title="Kelembaban: ${f.kelembaban} | Angin: ${f.kecepatan_angin} ${f.arah_angin} | Visibilitas: ${vis}">
+          ${f.image_url ? `<img class="weather-item-img" src="${f.image_url}" alt="${f.cuaca}" loading="lazy" onerror="this.style.display='none'">` : ''}
+          <span class="weather-item-label">${f.waktu.slice(0, 5)}</span>
+          <span class="weather-item-suhu">${f.suhu}</span>
+          <span class="weather-item-info">${f.cuaca}</span>
+        </div>`;
+      }).join('');
+
+      dataEl.innerHTML = items;
+    })
+    .catch(() => {
+      dataEl.innerHTML = '<span class="weather-error">⚠️ Info cuaca tidak tersedia</span>';
+    });
+}
+
+document.addEventListener('DOMContentLoaded', initWeatherWidget);
