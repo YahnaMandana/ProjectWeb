@@ -33,8 +33,14 @@
         <li><a href="tentang.html">Tentang</a></li>
         <li><a href="kontak.html">Kontak</a></li>
       </ul>
-      <div style="display:flex;align-items:center;gap:20px;">
+      <div style="display:flex;align-items:center;gap:12px;">
         <div class="cart-icon" title="Keranjang Belanja">🛒<span class="cart-badge" style="display:none;">0</span></div>
+        <div class="dots-menu-wrap">
+          <button class="dots-menu-btn" id="dotsMenuBtn" aria-label="Menu lainnya" title="Menu lainnya">⋮</button>
+          <div class="dots-dropdown" id="dotsDropdown">
+            <button class="dots-dropdown-item" id="dotsInfoSumenep">🗺️ Cek Info Sumenep</button>
+          </div>
+        </div>
         <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
       </div>
     </div>
@@ -43,6 +49,7 @@
       <a href="produk.html">🛍️ Produk</a>
       <a href="tentang.html">ℹ️ Tentang Kami</a>
       <a href="kontak.html">📞 Kontak</a>
+      <button id="mobileInfoSumenep" class="mobile-nav-info-btn">🗺️ Cek Info Sumenep</button>
     </div>
   </nav>
 
@@ -218,6 +225,38 @@
 
   <div class="toast-container"></div>
   <button class="back-to-top" id="backToTop" title="Kembali ke atas">↑</button>
+
+  <!-- Live Clock Widget -->
+  <div class="live-clock" id="liveClock" title="Klik untuk lihat info Sumenep">
+    <div class="live-clock-icon">🕐</div>
+    <div class="live-clock-time" id="clockTime">00:00:00</div>
+    <div class="live-clock-label">WIB</div>
+  </div>
+
+  <!-- Sumenep Info Modal -->
+  <div class="sumenep-modal-overlay" id="sumenepModalOverlay" role="dialog" aria-modal="true" aria-label="Info Sumenep">
+    <div class="sumenep-modal">
+      <button class="sumenep-modal-close" id="sumenepModalClose" aria-label="Tutup">✕</button>
+      <div class="sumenep-modal-header">
+        <span class="sumenep-modal-badge">📍 Sumenep, Jawa Timur</span>
+        <h2>Info Sumenep</h2>
+      </div>
+      <div class="sumenep-modal-body">
+        <div class="sumenep-time-section">
+          <div class="sumenep-time-icon" id="sumenepClockIcon">🕐</div>
+          <div class="sumenep-time-display" id="sumenepTimeDisplay">00:00:00</div>
+          <div class="sumenep-time-meta">
+            <span id="sumenepDateDisplay">Memuat tanggal…</span>
+            <span class="sumenep-timezone">WIB (UTC+7)</span>
+          </div>
+        </div>
+        <div class="sumenep-weather-section">
+          <h3>🌤️ Cuaca Sumenep</h3>
+          <div id="sumenepWeatherContent"><span class="weather-loading">⏳ Memuat data cuaca…</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- CART MODAL -->
   <div class="cart-modal-overlay" id="cartModalOverlay" role="dialog" aria-modal="true" aria-labelledby="cartModalTitle">

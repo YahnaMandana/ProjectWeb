@@ -32,6 +32,8 @@ document.addEventListener('DOMContentLoaded', () => {
   initParticleBackground();
   initLiveClock();
   initCartModal();
+  initDotsMenu();
+  initSumenepModal();
 });
 
 // =====================================================
@@ -573,6 +575,243 @@ function initLiveClock() {
   }
 
   return clockIntervalId;
+}
+
+// =====================================================
+// Three-dot Menu (Info Sumenep)
+// =====================================================
+function initDotsMenu() {
+  const btn      = document.getElementById('dotsMenuBtn');
+  const dropdown = document.getElementById('dotsDropdown');
+  if (!btn || !dropdown) return;
+
+  btn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    dropdown.classList.toggle('open');
+  });
+
+  document.addEventListener('click', () => {
+    dropdown.classList.remove('open');
+  });
+
+  const infoBtn = document.getElementById('dotsInfoSumenep');
+  if (infoBtn) {
+    infoBtn.addEventListener('click', () => {
+      dropdown.classList.remove('open');
+      openSumenepModal();
+    });
+  }
+
+  // Mobile nav button
+  const mobileInfoBtn = document.getElementById('mobileInfoSumenep');
+  if (mobileInfoBtn) {
+    mobileInfoBtn.addEventListener('click', () => {
+      // close mobile nav
+      document.querySelector('.hamburger')?.classList.remove('open');
+      document.querySelector('.mobile-nav')?.classList.remove('open');
+      openSumenepModal();
+    });
+  }
+
+  // Clock widget click
+  const clockWidget = document.getElementById('liveClock');
+  if (clockWidget) {
+    clockWidget.addEventListener('click', openSumenepModal);
+  }
+}
+
+// =====================================================
+// Sumenep Info Modal — Jam & Cuaca
+// =====================================================
+let _sumenepInterval = null;
+
+function openSumenepModal() {
+  const overlay = document.getElementById('sumenepModalOverlay');
+  if (!overlay) return;
+
+  overlay.classList.add('open');
+  document.body.style.overflow = 'hidden';
+
+  _updateSumenepTime();
+  if (!_sumenepInterval) {
+    _sumenepInterval = setInterval(_updateSumenepTime, 1000);
+  }
+
+  _loadSumenepWeather();
+}
+
+function closeSumenepModal() {
+  const overlay = document.getElementById('sumenepModalOverlay');
+  if (!overlay) return;
+  overlay.classList.remove('open');
+  document.body.style.overflow = '';
+  if (_sumenepInterval) {
+    clearInterval(_sumenepInterval);
+    _sumenepInterval = null;
+  }
+}
+
+function _updateSumenepTime() {
+  const timeEl = document.getElementById('sumenepTimeDisplay');
+  const dateEl = document.getElementById('sumenepDateDisplay');
+  const iconEl = document.getElementById('sumenepClockIcon');
+  if (!timeEl) return;
+
+  const now = new Date();
+  const timeFmt = new Intl.DateTimeFormat('id-ID', {
+    timeZone: 'Asia/Jakarta',
+    hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false,
+  });
+  const dateFmt = new Intl.DateTimeFormat('id-ID', {
+    timeZone: 'Asia/Jakarta',
+    weekday: 'long', day: 'numeric', month: 'long', year: 'numeric',
+  });
+
+  const parts = {};
+  timeFmt.formatToParts(now).forEach(({ type, value }) => { parts[type] = value; });
+  timeEl.textContent = `${parts.hour}:${parts.minute}:${parts.second}`;
+
+  if (dateEl) dateEl.textContent = dateFmt.format(now);
+
+  if (iconEl) {
+    const icons = ['🕛','🕐','🕑','🕒','🕓','🕔','🕕','🕖','🕗','🕘','🕙','🕚'];
+    iconEl.textContent = icons[parseInt(parts.hour, 10) % 12];
+  }
+}
+
+function _loadSumenepWeather() {
+  const content = document.getElementById('sumenepWeatherContent');
+  if (!content) return;
+
+  content.textContent = '';
+  const loadEl = document.createElement('span');
+  loadEl.className = 'weather-loading';
+  loadEl.textContent = '⏳ Memuat data cuaca…';
+  content.appendChild(loadEl);
+
+  fetch('https://api.nexray.web.id/information/cuaca?kota=Sumenep')
+    .then(res => {
+      if (!res.ok) throw new Error('Network error');
+      return res.json();
+    })
+    .then(json => {
+      if (!json.status || !json.result) throw new Error('Invalid data');
+      const forecasts = json.result.forecasts;
+      if (!forecasts || forecasts.length === 0) throw new Error('No forecast');
+
+      const parser = new DOMParser();
+      const decode = str => {
+        const doc = parser.parseFromString(str || '', 'text/html');
+        return doc.body.textContent || '';
+      };
+
+      content.textContent = '';
+
+      if (json.timestamp) {
+        const ts = new Date(json.timestamp);
+        const upEl = document.createElement('p');
+        upEl.className = 'sumenep-weather-update';
+        upEl.textContent = '🕐 Update: ' + ts.toLocaleString('id-ID', {
+          timeZone: 'Asia/Jakarta',
+          weekday: 'long', day: 'numeric', month: 'long',
+          hour: '2-digit', minute: '2-digit',
+        }) + ' WIB';
+        content.appendChild(upEl);
+      }
+
+      forecasts.forEach(f => {
+        const cuaca     = decode(f.cuaca);
+        const suhu      = decode(f.suhu);
+        const waktu     = decode(f.waktu);
+        const kelembaban = decode(f.kelembaban);
+        const kecepatan = decode(f.kecepatan_angin);
+        const arah      = decode(f.arah_angin);
+        const vis       = decode(f.visibilitas);
+
+        const card = document.createElement('div');
+        card.className = 'sumenep-forecast-card';
+
+        // Weather image
+        const imgWrap = document.createElement('div');
+        if (f.image_url) {
+          const img = document.createElement('img');
+          img.className = 'sumenep-forecast-img';
+          img.src = f.image_url;
+          img.alt = cuaca;
+          img.loading = 'lazy';
+          img.addEventListener('error', () => {
+            imgWrap.textContent = '🌤️';
+            img.remove();
+          });
+          imgWrap.appendChild(img);
+        } else {
+          imgWrap.className = 'sumenep-forecast-img-placeholder';
+          imgWrap.textContent = '🌤️';
+        }
+        card.appendChild(imgWrap);
+
+        // Info block
+        const info = document.createElement('div');
+        info.className = 'sumenep-forecast-info';
+
+        const timeEl2 = document.createElement('div');
+        timeEl2.className = 'sumenep-forecast-time';
+        timeEl2.textContent = '⏰ ' + waktu;
+        info.appendChild(timeEl2);
+
+        const suhuEl = document.createElement('div');
+        suhuEl.className = 'sumenep-forecast-suhu';
+        suhuEl.textContent = suhu;
+        info.appendChild(suhuEl);
+
+        const kondEl = document.createElement('div');
+        kondEl.className = 'sumenep-forecast-kondisi';
+        kondEl.textContent = cuaca;
+        info.appendChild(kondEl);
+
+        const detailsEl = document.createElement('div');
+        detailsEl.className = 'sumenep-forecast-details';
+        [
+          { icon: '💧', val: kelembaban, title: 'Kelembaban' },
+          { icon: '💨', val: `${kecepatan} ${arah}`, title: 'Angin' },
+          { icon: '👁️', val: vis, title: 'Visibilitas' },
+        ].forEach(d => {
+          if (!d.val.trim()) return;
+          const det = document.createElement('span');
+          det.className = 'sumenep-forecast-detail';
+          det.title = d.title;
+          det.textContent = `${d.icon} ${d.val}`;
+          detailsEl.appendChild(det);
+        });
+        info.appendChild(detailsEl);
+
+        card.appendChild(info);
+        content.appendChild(card);
+      });
+    })
+    .catch(err => {
+      console.error('[Sumenep] Gagal memuat cuaca:', err);
+      content.textContent = '';
+      const errEl = document.createElement('p');
+      errEl.className = 'weather-error';
+      errEl.style.color = '#c62828';
+      errEl.textContent = '⚠️ Info cuaca tidak tersedia saat ini.';
+      content.appendChild(errEl);
+    });
+}
+
+function initSumenepModal() {
+  const overlay  = document.getElementById('sumenepModalOverlay');
+  const closeBtn = document.getElementById('sumenepModalClose');
+  if (!overlay) return;
+
+  if (closeBtn) closeBtn.addEventListener('click', closeSumenepModal);
+  overlay.addEventListener('click', (e) => {
+    if (e.target === overlay) closeSumenepModal();
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeSumenepModal();
+  });
 }
 
 // =====================================================
