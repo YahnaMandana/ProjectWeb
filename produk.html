@@ -222,28 +222,38 @@
   <!-- CART MODAL -->
   <div class="cart-modal-overlay" id="cartModalOverlay" role="dialog" aria-modal="true" aria-labelledby="cartModalTitle">
     <div class="cart-modal">
+      <!-- Decorative animated blobs -->
+      <div class="cm-blob cm-blob-1"></div>
+      <div class="cm-blob cm-blob-2"></div>
+      <div class="cm-blob cm-blob-3"></div>
+
       <button class="cart-modal-close" id="cartModalClose" aria-label="Tutup">✕</button>
+
       <div class="cart-modal-header">
-        <span class="cart-modal-icon">🌭</span>
-        <div>
-          <h2 id="cartModalTitle" class="cart-modal-product-name">Sosis Mix</h2>
-          <p class="cart-modal-price-per">Harga satuan: <strong>Rp 1.000</strong></p>
+        <div class="cm-icon-wrap">
+          <span class="cart-modal-icon">🌭</span>
         </div>
+        <h2 id="cartModalTitle" class="cart-modal-product-name">Sosis Mix</h2>
+        <p class="cart-modal-price-per">Harga satuan: <strong>Rp 1.000</strong></p>
       </div>
+
       <div class="cart-modal-body">
-        <p class="cart-modal-label">Jumlah item:</p>
+        <p class="cart-modal-label">Pilih jumlah item kamu 👇</p>
         <div class="cart-qty-row">
           <button class="cart-qty-btn" id="cartQtyMinus" aria-label="Kurangi">−</button>
           <span class="cart-qty-display" id="cartQtyDisplay">1</span>
           <button class="cart-qty-btn" id="cartQtyPlus" aria-label="Tambah">+</button>
         </div>
         <div class="cart-modal-total">
-          Total: <strong id="cartTotalDisplay">Rp 1.000</strong>
+          <span class="cm-total-label">Total Pembayaran</span>
+          <strong id="cartTotalDisplay">Rp 1.000</strong>
         </div>
       </div>
+
       <div class="cart-modal-footer">
         <button class="cart-modal-cancel" id="cartModalCancel">Batal</button>
         <a class="cart-modal-buy" id="cartModalBuy" href="#" target="_blank" rel="noopener noreferrer">
+          <span class="cm-buy-shine"></span>
           💬 Beli via WhatsApp
         </a>
       </div>

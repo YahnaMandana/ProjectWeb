@@ -606,10 +606,19 @@ function initCartModal() {
     );
   }
 
+  function bump(el) {
+    el.classList.remove('bump');
+    el.offsetWidth; // force reflow
+    el.classList.add('bump');
+    el.addEventListener('transitionend', () => el.classList.remove('bump'), { once: true });
+  }
+
   function updateModal() {
     const total = pricePerItem * quantity;
     qtyDisplay.textContent   = quantity;
     totalDisplay.textContent = formatRupiah(total);
+    bump(qtyDisplay);
+    bump(totalDisplay);
     const text = buildWAText(currentProduct, quantity, total);
     buyLink.href = 'https://wa.me/6281807159805?text=' + encodeURIComponent(text);
   }
