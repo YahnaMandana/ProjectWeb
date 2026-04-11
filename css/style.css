@@ -1400,11 +1400,6 @@ ul { list-style: none; }
   display: flex;
   background: rgba(15, 15, 35, .65);
   backdrop-filter: blur(8px);
-  animation: cmOverlayIn .35s ease both;
-}
-@keyframes cmOverlayIn {
-  from { background: rgba(15,15,35,0); }
-  to   { background: rgba(15,15,35,.65); }
 }
 
 .cart-modal {

@@ -608,7 +608,6 @@ function initCartModal() {
 
   function bump(el) {
     el.classList.remove('bump');
-    // eslint-disable-next-line no-unused-expressions
     el.offsetWidth; // force reflow
     el.classList.add('bump');
     el.addEventListener('transitionend', () => el.classList.remove('bump'), { once: true });
