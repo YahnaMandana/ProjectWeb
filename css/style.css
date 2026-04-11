@@ -1653,3 +1653,82 @@ ul { list-style: none; }
   0%        { left: -100%; }
   40%, 100% { left: 160%; }
 }
+
+/* =====================================================
+   WEATHER BAR — Cuaca Sumenep
+   ===================================================== */
+.weather-bar {
+  background: linear-gradient(90deg, #1565c0 0%, #0288d1 50%, #039be5 100%);
+  color: #fff;
+  font-size: .82rem;
+  font-weight: 500;
+  letter-spacing: .2px;
+  box-shadow: 0 2px 8px rgba(2,136,209,.3);
+}
+.weather-bar-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 7px 20px;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  flex-wrap: wrap;
+}
+.weather-bar-location {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  white-space: nowrap;
+  opacity: .92;
+}
+.weather-bar-icon { font-size: 1rem; }
+
+.weather-bar-data {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 14px;
+  min-width: 0;
+}
+.weather-loading { opacity: .75; font-style: italic; }
+.weather-error   { opacity: .8; font-style: italic; color: #ffcdd2; }
+
+/* each forecast item */
+.weather-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255,255,255,.12);
+  border-radius: 20px;
+  padding: 3px 11px;
+  white-space: nowrap;
+  transition: background .2s;
+}
+.weather-item:hover { background: rgba(255,255,255,.22); }
+.weather-item-img {
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+.weather-item-label {
+  font-size: .7rem;
+  opacity: .75;
+  margin-right: 2px;
+}
+.weather-item-suhu { font-weight: 700; font-size: .88rem; }
+.weather-item-info { font-size: .78rem; opacity: .9; }
+
+.weather-bar-time {
+  white-space: nowrap;
+  opacity: .7;
+  font-size: .75rem;
+  margin-left: auto;
+}
+
+@media (max-width: 600px) {
+  .weather-bar-inner { gap: 10px; }
+  .weather-bar-time  { display: none; }
+  .weather-item      { padding: 3px 8px; font-size: .75rem; }
+}
