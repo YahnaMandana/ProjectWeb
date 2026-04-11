@@ -578,30 +578,9 @@ function initLiveClock() {
 }
 
 // =====================================================
-// Three-dot Menu (Info Sumenep)
+// Info Sumenep — Mobile Nav & Clock
 // =====================================================
 function initDotsMenu() {
-  const btn      = document.getElementById('dotsMenuBtn');
-  const dropdown = document.getElementById('dotsDropdown');
-  if (!btn || !dropdown) return;
-
-  btn.addEventListener('click', (e) => {
-    e.stopPropagation();
-    dropdown.classList.toggle('open');
-  });
-
-  document.addEventListener('click', () => {
-    dropdown.classList.remove('open');
-  });
-
-  const infoBtn = document.getElementById('dotsInfoSumenep');
-  if (infoBtn) {
-    infoBtn.addEventListener('click', () => {
-      dropdown.classList.remove('open');
-      openSumenepModal();
-    });
-  }
-
   // Mobile nav button
   const mobileInfoBtn = document.getElementById('mobileInfoSumenep');
   if (mobileInfoBtn) {
@@ -636,8 +615,6 @@ function openSumenepModal() {
   if (!_sumenepInterval) {
     _sumenepInterval = setInterval(_updateSumenepTime, 1000);
   }
-
-  _loadSumenepWeather();
 }
 
 function closeSumenepModal() {
@@ -812,6 +789,11 @@ function initSumenepModal() {
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') closeSumenepModal();
   });
+
+  const cekCuacaBtn = document.getElementById('sumenepCekCuacaBtn');
+  if (cekCuacaBtn) {
+    cekCuacaBtn.addEventListener('click', _loadSumenepWeather);
+  }
 }
 
 // =====================================================
@@ -916,89 +898,3 @@ function initCartModal() {
   });
 }
 
-// =====================================================
-// Weather Widget — Cuaca Sumenep
-// =====================================================
-function initWeatherWidget() {
-  const dataEl = document.getElementById('weatherData');
-  const timeEl = document.getElementById('weatherTime');
-  if (!dataEl) return;
-
-  fetch('https://api.nexray.web.id/information/cuaca?kota=Sumenep')
-    .then(res => {
-      if (!res.ok) throw new Error('Network error');
-      return res.json();
-    })
-    .then(json => {
-      if (!json.status || !json.result) throw new Error('Invalid data');
-
-      const forecasts = json.result.forecasts;
-      if (!forecasts || forecasts.length === 0) throw new Error('No forecast');
-
-      // Show timestamp if available
-      if (timeEl && json.timestamp) {
-        const ts = new Date(json.timestamp);
-        timeEl.textContent = 'Update: ' + ts.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', timeZone: 'Asia/Makassar' }) + ' WITA';
-      }
-
-      // Build forecast items (show up to 4) using DOM methods to avoid XSS
-      const parser = new DOMParser();
-      dataEl.textContent = '';
-      forecasts.slice(0, 2).forEach(f => {
-        // Decode HTML entities from the API safely via DOMParser
-        const decodeHtml = str => {
-          const doc = parser.parseFromString(str || '', 'text/html');
-          return doc.body.textContent || '';
-        };
-
-        const cuaca = decodeHtml(f.cuaca);
-        const suhu = decodeHtml(f.suhu);
-        const waktu = decodeHtml(f.waktu).slice(0, 5);
-        const kelembaban = decodeHtml(f.kelembaban);
-        const kecepatan = decodeHtml(f.kecepatan_angin);
-        const arah = decodeHtml(f.arah_angin);
-        const vis = decodeHtml(f.visibilitas);
-
-        const item = document.createElement('div');
-        item.className = 'weather-item';
-        item.title = `Kelembaban: ${kelembaban} | Angin: ${kecepatan} ${arah} | Visibilitas: ${vis}`;
-
-        if (f.image_url) {
-          const img = document.createElement('img');
-          img.className = 'weather-item-img';
-          img.src = f.image_url;
-          img.alt = cuaca;
-          img.loading = 'lazy';
-          img.addEventListener('error', () => { img.style.display = 'none'; });
-          item.appendChild(img);
-        }
-
-        const labelEl = document.createElement('span');
-        labelEl.className = 'weather-item-label';
-        labelEl.textContent = waktu;
-        item.appendChild(labelEl);
-
-        const suhuEl = document.createElement('span');
-        suhuEl.className = 'weather-item-suhu';
-        suhuEl.textContent = suhu;
-        item.appendChild(suhuEl);
-
-        const infoEl = document.createElement('span');
-        infoEl.className = 'weather-item-info';
-        infoEl.textContent = cuaca;
-        item.appendChild(infoEl);
-
-        dataEl.appendChild(item);
-      });
-    })
-    .catch(err => {
-      console.error('[Weather] Gagal memuat data cuaca:', err);
-      dataEl.textContent = '';
-      const errSpan = document.createElement('span');
-      errSpan.className = 'weather-error';
-      errSpan.textContent = '⚠️ Info cuaca tidak tersedia';
-      dataEl.appendChild(errSpan);
-    });
-}
-
-document.addEventListener('DOMContentLoaded', initWeatherWidget);
