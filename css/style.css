@@ -204,13 +204,21 @@ ul { list-style: none; }
 
 /* Mobile nav */
 .mobile-nav {
-  display: none;
+  display: flex;
   flex-direction: column;
   background: var(--white);
-  padding: 16px 20px;
+  padding: 0 20px;
   border-top: 1px solid var(--border);
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: max-height .35s cubic-bezier(.4,0,.2,1), padding .35s cubic-bezier(.4,0,.2,1), opacity .25s ease;
 }
-.mobile-nav.open { display: flex; }
+.mobile-nav.open {
+  max-height: 480px;
+  padding: 16px 20px;
+  opacity: 1;
+}
 .mobile-nav a {
   padding: 12px 0;
   font-weight: 600;
@@ -361,6 +369,7 @@ ul { list-style: none; }
   transition: transform var(--transition), box-shadow var(--transition);
   display: flex;
   flex-direction: column;
+  will-change: transform;
 }
 .product-card:hover {
   transform: translateY(-6px);
@@ -917,6 +926,7 @@ ul { list-style: none; }
   transition: opacity .4s ease, transform .4s ease;
   z-index: 999;
   pointer-events: none;
+  will-change: opacity, transform;
 }
 .back-to-top.visible {
   opacity: 1;
@@ -935,7 +945,8 @@ ul { list-style: none; }
 .reveal {
   opacity: 0;
   transform: translateY(40px);
-  transition: opacity .65s ease, transform .65s ease;
+  transition: opacity .6s cubic-bezier(.25,.46,.45,.94), transform .6s cubic-bezier(.25,.46,.45,.94);
+  will-change: opacity, transform;
 }
 .reveal.reveal-left  { transform: translateX(-40px); }
 .reveal.reveal-right { transform: translateX(40px); }
@@ -1087,6 +1098,7 @@ ul { list-style: none; }
   opacity: 0;
   z-index: 0;
   user-select: none;
+  will-change: transform, opacity;
 }
 @keyframes floatEmoji {
   0%   { transform: translateY(0) rotate(0deg) scale(.8);  opacity: 0; }
@@ -1141,6 +1153,7 @@ ul { list-style: none; }
   border-radius: 50%;
   pointer-events: none;
   z-index: 9999;
+  will-change: transform, opacity;
   animation: sparkleFade .6s ease-out forwards;
 }
 @keyframes sparkleFade {
@@ -1239,6 +1252,7 @@ ul { list-style: none; }
 .promo-ticker-inner {
   display: inline-block;
   animation: tickerScroll 20s linear infinite;
+  will-change: transform;
 }
 @keyframes tickerScroll {
   from { transform: translateX(100vw); }
