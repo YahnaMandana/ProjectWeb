@@ -249,7 +249,7 @@ function initScrollReveal() {
         const idx = siblings.indexOf(entry.target);
         setTimeout(() => {
           entry.target.classList.add('revealed');
-        }, idx * 80);
+        }, idx * 60);
         observer.unobserve(entry.target);
       }
     });
@@ -415,7 +415,7 @@ function initCursorSparkle() {
   document.addEventListener('mousemove', (e) => {
     if (throttle) return;
     throttle = true;
-    setTimeout(() => { throttle = false; }, 60);
+    setTimeout(() => { throttle = false; }, 80);
 
     const dx = e.clientX - lastX;
     const dy = e.clientY - lastY;
@@ -487,8 +487,8 @@ function initParticleBackground() {
 
   const ctx = canvas.getContext('2d');
   const pts = [];
-  const COUNT = 60;
-  const MAX_DIST = 130;
+  const COUNT = 45;
+  const MAX_DIST = 110;
 
   function resize() {
     canvas.width  = hero.offsetWidth;
