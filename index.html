@@ -470,16 +470,36 @@
           </div>
         </div>
 
+        <!-- Action Buttons -->
+        <div class="sumenep-action-buttons">
+          <button class="sumenep-action-btn" id="sumenepCekCuacaBtn">🌤️ Info Cuaca Sumenep</button>
+          <button class="sumenep-action-btn sumenep-action-btn--sholat" id="sumenepCekSholatBtn">🕌 Jadwal Sholat Sumenep</button>
+        </div>
+
         <!-- Weather section -->
-        <div class="sumenep-weather-section">
+        <div class="sumenep-weather-section" id="sumenepWeatherSection" style="display:none;">
           <div class="sumenep-weather-header">
             <h3>🌤️ Cuaca Sumenep</h3>
-            <button class="sumenep-refresh-btn" id="sumenepCekCuacaBtn" title="Muat ulang cuaca">↻</button>
+            <button class="sumenep-refresh-btn" id="sumenepRefreshCuacaBtn" title="Muat ulang cuaca">↻</button>
           </div>
           <div id="sumenepWeatherContent">
             <div class="sumenep-weather-empty">
               <div class="sumenep-weather-empty-icon">🌤️</div>
-              <p>Tekan tombol muat ulang untuk memuat data cuaca terkini</p>
+              <p>Memuat data cuaca…</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Prayer Schedule section -->
+        <div class="sumenep-sholat-section" id="sumenepSholatSection" style="display:none;">
+          <div class="sumenep-weather-header">
+            <h3>🕌 Jadwal Sholat Sumenep</h3>
+            <button class="sumenep-refresh-btn" id="sumenepRefreshSholatBtn" title="Muat ulang jadwal sholat">↻</button>
+          </div>
+          <div id="sumenepSholatContent">
+            <div class="sumenep-weather-empty">
+              <div class="sumenep-weather-empty-icon">🕌</div>
+              <p>Memuat jadwal sholat…</p>
             </div>
           </div>
         </div>

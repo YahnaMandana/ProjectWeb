@@ -651,7 +651,6 @@ function openSumenepModal() {
     _sumenepInterval = setInterval(_updateSumenepTime, 1000);
   }
   _startSumenepParticles();
-  _loadSumenepWeather();
 }
 
 function closeSumenepModal() {
@@ -738,9 +737,12 @@ function _stopSumenepParticles() {
 }
 
 function _loadSumenepWeather() {
+  const section = document.getElementById('sumenepWeatherSection');
   const content = document.getElementById('sumenepWeatherContent');
-  const btn = document.getElementById('sumenepCekCuacaBtn');
+  const btn = document.getElementById('sumenepRefreshCuacaBtn');
   if (!content) return;
+
+  if (section) section.style.display = '';
 
   content.textContent = '';
   const loadEl = document.createElement('span');
@@ -864,6 +866,75 @@ function _loadSumenepWeather() {
     });
 }
 
+function _loadSumenepPrayerSchedule() {
+  const section = document.getElementById('sumenepSholatSection');
+  const content = document.getElementById('sumenepSholatContent');
+  const btn = document.getElementById('sumenepRefreshSholatBtn');
+  if (!content) return;
+
+  if (section) section.style.display = '';
+
+  content.textContent = '';
+  const loadEl = document.createElement('span');
+  loadEl.className = 'weather-loading';
+  loadEl.textContent = '⏳ Memuat jadwal sholat…';
+  content.appendChild(loadEl);
+  if (btn) btn.classList.add('loading');
+
+  fetch('https://api.nexray.web.id/information/jadwalsholat?kota=Sumenep')
+    .then(res => {
+      if (!res.ok) throw new Error('Network error');
+      return res.json();
+    })
+    .then(json => {
+      if (!json.status || !json.result) throw new Error('Invalid data');
+      const { kota, periode, tanggal, jadwal } = json.result;
+
+      content.textContent = '';
+
+      const metaEl = document.createElement('p');
+      metaEl.className = 'sumenep-sholat-meta';
+      metaEl.textContent = `📅 ${kota} — ${tanggal} ${periode}`;
+      content.appendChild(metaEl);
+
+      const waktuItems = [
+        { label: 'Imsyak',  icon: '🌙', key: 'imsyak' },
+        { label: 'Subuh',   icon: '🌄', key: 'subuh' },
+        { label: 'Terbit',  icon: '🌅', key: 'terbit' },
+        { label: 'Dhuha',   icon: '☀️',  key: 'dhuha' },
+        { label: 'Dzuhur',  icon: '🌞', key: 'dzuhur' },
+        { label: 'Ashar',   icon: '🌤️', key: 'ashar' },
+        { label: 'Maghrib', icon: '🌇', key: 'maghrib' },
+        { label: 'Isya',    icon: '🌃', key: 'isya' },
+      ];
+
+      const grid = document.createElement('div');
+      grid.className = 'sumenep-sholat-grid';
+      waktuItems.forEach(({ label, icon, key }) => {
+        if (!jadwal[key]) return;
+        const tile = document.createElement('div');
+        tile.className = 'sumenep-sholat-tile';
+        tile.innerHTML =
+          `<div class="sumenep-sholat-icon">${icon}</div>` +
+          `<div class="sumenep-sholat-label">${label}</div>` +
+          `<div class="sumenep-sholat-time">${jadwal[key]}</div>`;
+        grid.appendChild(tile);
+      });
+      content.appendChild(grid);
+    })
+    .catch(err => {
+      console.error('[Sumenep] Gagal memuat jadwal sholat:', err);
+      content.textContent = '';
+      const errEl = document.createElement('p');
+      errEl.className = 'weather-error';
+      errEl.textContent = '⚠️ Jadwal sholat tidak tersedia saat ini.';
+      content.appendChild(errEl);
+    })
+    .finally(() => {
+      if (btn) btn.classList.remove('loading');
+    });
+}
+
 function initSumenepModal() {
   const overlay  = document.getElementById('sumenepModalOverlay');
   const closeBtn = document.getElementById('sumenepModalClose');
@@ -880,6 +951,21 @@ function initSumenepModal() {
   const cekCuacaBtn = document.getElementById('sumenepCekCuacaBtn');
   if (cekCuacaBtn) {
     cekCuacaBtn.addEventListener('click', _loadSumenepWeather);
+  }
+
+  const refreshCuacaBtn = document.getElementById('sumenepRefreshCuacaBtn');
+  if (refreshCuacaBtn) {
+    refreshCuacaBtn.addEventListener('click', _loadSumenepWeather);
+  }
+
+  const cekSholatBtn = document.getElementById('sumenepCekSholatBtn');
+  if (cekSholatBtn) {
+    cekSholatBtn.addEventListener('click', _loadSumenepPrayerSchedule);
+  }
+
+  const refreshSholatBtn = document.getElementById('sumenepRefreshSholatBtn');
+  if (refreshSholatBtn) {
+    refreshSholatBtn.addEventListener('click', _loadSumenepPrayerSchedule);
   }
 }
 
