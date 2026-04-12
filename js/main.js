@@ -65,11 +65,15 @@ function initStickyNav() {
   const navbar = document.querySelector('.navbar');
   if (!navbar) return;
 
+  let rafId;
   window.addEventListener('scroll', () => {
-    navbar.style.boxShadow = window.scrollY > 10
-      ? '0 4px 20px rgba(0,0,0,.14)'
-      : '0 2px 12px rgba(0,0,0,.08)';
-  });
+    cancelAnimationFrame(rafId);
+    rafId = requestAnimationFrame(() => {
+      navbar.style.boxShadow = window.scrollY > 10
+        ? '0 4px 20px rgba(0,0,0,.14)'
+        : '0 2px 12px rgba(0,0,0,.08)';
+    });
+  }, { passive: true });
 }
 
 // =====================================================
@@ -261,12 +265,16 @@ function initScrollProgress() {
   const bar = document.getElementById('scrollProgress');
   if (!bar) return;
 
+  let rafId;
   window.addEventListener('scroll', () => {
-    const scrollTop = window.scrollY;
-    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-    const pct = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
-    bar.style.width = pct + '%';
-  });
+    cancelAnimationFrame(rafId);
+    rafId = requestAnimationFrame(() => {
+      const scrollTop = window.scrollY;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const pct = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+      bar.style.width = pct + '%';
+    });
+  }, { passive: true });
 }
 
 // =====================================================
@@ -276,13 +284,17 @@ function initBackToTop() {
   const btn = document.getElementById('backToTop');
   if (!btn) return;
 
+  let rafId;
   window.addEventListener('scroll', () => {
-    if (window.scrollY > 400) {
-      btn.classList.add('visible');
-    } else {
-      btn.classList.remove('visible');
-    }
-  });
+    cancelAnimationFrame(rafId);
+    rafId = requestAnimationFrame(() => {
+      if (window.scrollY > 400) {
+        btn.classList.add('visible');
+      } else {
+        btn.classList.remove('visible');
+      }
+    });
+  }, { passive: true });
 
   btn.addEventListener('click', () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
