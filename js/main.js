@@ -935,6 +935,96 @@ function _loadSumenepPrayerSchedule() {
     });
 }
 
+async function _downloadTiktokVideo() {
+  const urlInput = document.getElementById('sumenepTiktokUrl');
+  const dlBtn    = document.getElementById('sumenepTiktokDlBtn');
+  const result   = document.getElementById('sumenepTiktokResult');
+  if (!urlInput || !result) return;
+
+  const url = urlInput.value.trim();
+  if (!url) {
+    result.innerHTML = '<p class="sumenep-tiktok-error">⚠️ Masukkan URL TikTok terlebih dahulu.</p>';
+    return;
+  }
+
+  if (!/^https?:\/\/(www\.|vm\.|vt\.)?tiktok\.com\//i.test(url)) {
+    result.innerHTML = '<p class="sumenep-tiktok-error">⚠️ URL tidak valid. Masukkan URL dari TikTok.</p>';
+    return;
+  }
+
+  if (dlBtn) dlBtn.disabled = true;
+  result.innerHTML = '<p class="sumenep-tiktok-processing">⏳ Bot Kustini AI akan proses download video…</p>';
+
+  function escHtml(str) {
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
+  try {
+    const res  = await fetch('https://api.danzy.web.id/api/download/tiktok?url=' + encodeURIComponent(url));
+    const data = await res.json();
+
+    if (!data.status || !data.data) {
+      result.innerHTML = '<p class="sumenep-tiktok-error">⚠️ Gagal mengambil data. Pastikan URL TikTok benar.</p>';
+      return;
+    }
+
+    const { title, author, thumbnail, links } = data.data;
+    // Use the first link which is the direct MP4 video download
+    const downloadLink = Array.isArray(links) ? links[0] : null;
+
+    const card = document.createElement('div');
+    card.className = 'sumenep-tiktok-result-card';
+
+    if (thumbnail) {
+      const img = document.createElement('img');
+      img.className = 'sumenep-tiktok-thumb';
+      img.src = thumbnail;
+      img.alt = 'Thumbnail';
+      img.loading = 'lazy';
+      card.appendChild(img);
+    }
+    if (title) {
+      const titleEl = document.createElement('p');
+      titleEl.className = 'sumenep-tiktok-title';
+      titleEl.textContent = title;
+      card.appendChild(titleEl);
+    }
+    if (author) {
+      const authorEl = document.createElement('p');
+      authorEl.className = 'sumenep-tiktok-author';
+      authorEl.textContent = '👤 ' + author;
+      card.appendChild(authorEl);
+    }
+    if (downloadLink) {
+      const a = document.createElement('a');
+      a.className = 'sumenep-tiktok-download-link';
+      a.href = downloadLink;
+      a.target = '_blank';
+      a.rel = 'noopener noreferrer';
+      a.textContent = '⬇️ Download Video';
+      card.appendChild(a);
+    } else {
+      const errEl = document.createElement('p');
+      errEl.className = 'sumenep-tiktok-error';
+      errEl.textContent = '⚠️ Link download tidak tersedia.';
+      card.appendChild(errEl);
+    }
+
+    result.innerHTML = '';
+    result.appendChild(card);
+  } catch (err) {
+    console.error('[TikTok] Gagal download:', err);
+    result.innerHTML = '<p class="sumenep-tiktok-error">⚠️ Terjadi kesalahan. Coba lagi nanti.</p>';
+  } finally {
+    if (dlBtn) dlBtn.disabled = false;
+  }
+}
+
 function initSumenepModal() {
   const overlay  = document.getElementById('sumenepModalOverlay');
   const closeBtn = document.getElementById('sumenepModalClose');
@@ -966,6 +1056,21 @@ function initSumenepModal() {
   const refreshSholatBtn = document.getElementById('sumenepRefreshSholatBtn');
   if (refreshSholatBtn) {
     refreshSholatBtn.addEventListener('click', _loadSumenepPrayerSchedule);
+  }
+
+  const downloadTiktokBtn = document.getElementById('sumenepDownloadTiktokBtn');
+  if (downloadTiktokBtn) {
+    downloadTiktokBtn.addEventListener('click', () => {
+      const section = document.getElementById('sumenepTiktokSection');
+      if (!section) return;
+      const isVisible = section.style.display !== 'none';
+      section.style.display = isVisible ? 'none' : 'block';
+    });
+  }
+
+  const tiktokDlBtn = document.getElementById('sumenepTiktokDlBtn');
+  if (tiktokDlBtn) {
+    tiktokDlBtn.addEventListener('click', _downloadTiktokVideo);
   }
 }
 
