@@ -1808,7 +1808,7 @@ ul { list-style: none; }
 /* ---------- Keyframes ---------- */
 @keyframes smOverlayIn  { from { opacity: 0; } to { opacity: 1; } }
 @keyframes smModalIn    { from { opacity: 0; transform: translateY(48px) scale(.94); } to { opacity: 1; transform: none; } }
-@keyframes smGlow       { 0%,100% { box-shadow: 0 0 18px 4px rgba(0,180,216,.35); } 50% { box-shadow: 0 0 34px 10px rgba(0,180,216,.6); } }
+@keyframes smGlow       { 0%,100% { box-shadow: 0 0 18px 4px rgba(255,140,0,.35); } 50% { box-shadow: 0 0 34px 10px rgba(255,140,0,.6); } }
 @keyframes smColonBlink { 0%,100% { opacity: 1; } 50% { opacity: .2; } }
 @keyframes smPulseRing  { 0% { transform: scale(1); opacity: .7; } 100% { transform: scale(1.9); opacity: 0; } }
 @keyframes smShimmer    { 0% { background-position: -200% center; } 100% { background-position: 200% center; } }
@@ -1846,16 +1846,16 @@ ul { list-style: none; }
   border-radius: 24px;
   position: relative;
   background: #0d1117;
-  border: 1px solid rgba(0, 180, 216, .3);
+  border: 1px solid rgba(255,140,0,.3);
   box-shadow:
-    0 0 0 1px rgba(0,180,216,.12),
+    0 0 0 1px rgba(255,140,0,.12),
     0 32px 80px rgba(0,0,0,.6),
-    0 0 60px rgba(0,180,216,.08);
+    0 0 60px rgba(255,140,0,.08);
   transform: translateY(48px) scale(.94);
   transition: transform .4s cubic-bezier(.34,1.56,.64,1), opacity .35s ease;
   opacity: 0;
   scrollbar-width: thin;
-  scrollbar-color: rgba(0,180,216,.4) transparent;
+  scrollbar-color: rgba(255,140,0,.4) transparent;
 }
 .sumenep-modal-overlay.open .sumenep-modal {
   transform: none;
@@ -1894,7 +1894,7 @@ ul { list-style: none; }
   overflow: hidden;
   padding: 36px 24px 28px;
   text-align: center;
-  background: linear-gradient(145deg, #050d20 0%, #0a2342 40%, #0d3b5e 70%, #0f3460 100%);
+  background: linear-gradient(145deg, #1a0500 0%, #2d0f00 40%, #3d1800 70%, #2a0c00 100%);
   border-radius: 24px 24px 0 0;
 }
 .sumenep-modal-header::before {
@@ -1902,8 +1902,8 @@ ul { list-style: none; }
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(ellipse 80% 60% at 50% -10%, rgba(0,180,216,.25) 0%, transparent 70%),
-    radial-gradient(ellipse 60% 40% at 80% 100%, rgba(100,0,200,.15) 0%, transparent 60%);
+    radial-gradient(ellipse 80% 60% at 50% -10%, rgba(255,140,0,.28) 0%, transparent 70%),
+    radial-gradient(ellipse 60% 40% at 80% 100%, rgba(255,80,0,.15) 0%, transparent 60%);
   pointer-events: none;
 }
 /* Animated top border glow */
@@ -1912,7 +1912,7 @@ ul { list-style: none; }
   position: absolute;
   top: 0; left: 0; right: 0;
   height: 2px;
-  background: linear-gradient(90deg, transparent, #00b4d8, #90e0ef, #00b4d8, transparent);
+  background: linear-gradient(90deg, transparent, #ff8c00, #ffb347, #ff8c00, transparent);
   background-size: 200% auto;
   animation: smShimmer 3s linear infinite;
 }
@@ -1933,14 +1933,14 @@ ul { list-style: none; }
 .sumenep-header-icon {
   font-size: 2.6rem;
   margin-bottom: 8px;
-  filter: drop-shadow(0 0 12px rgba(0,180,216,.7));
+  filter: drop-shadow(0 0 12px rgba(255,140,0,.7));
   animation: smGlow 3s ease-in-out infinite;
 }
 .sumenep-modal-badge {
   display: inline-block;
-  background: rgba(0,180,216,.18);
-  border: 1px solid rgba(0,180,216,.4);
-  color: #90e0ef;
+  background: rgba(255,140,0,.18);
+  border: 1px solid rgba(255,140,0,.45);
+  color: #ffb347;
   font-size: .72rem;
   font-weight: 600;
   letter-spacing: .08em;
@@ -1954,12 +1954,12 @@ ul { list-style: none; }
   font-size: 1.65rem;
   font-weight: 800;
   color: #fff;
-  text-shadow: 0 2px 20px rgba(0,180,216,.5);
+  text-shadow: 0 2px 20px rgba(255,140,0,.55);
   letter-spacing: -.01em;
 }
 .sumenep-header-sub {
   font-size: .78rem;
-  color: rgba(144,224,239,.7);
+  color: rgba(255,179,71,.7);
   margin: 0;
   letter-spacing: .04em;
 }
@@ -1978,8 +1978,8 @@ ul { list-style: none; }
 .sumenep-time-section {
   position: relative;
   overflow: hidden;
-  background: linear-gradient(135deg, #050d20, #0a1929);
-  border: 1px solid rgba(0,180,216,.25);
+  background: linear-gradient(135deg, #150500, #1e0900);
+  border: 1px solid rgba(255,140,0,.28);
   border-radius: 18px;
   padding: 24px 20px 20px;
   text-align: center;
@@ -1989,7 +1989,7 @@ ul { list-style: none; }
   content: '';
   position: absolute;
   inset: 0;
-  background: radial-gradient(ellipse 90% 70% at 50% 0%, rgba(0,180,216,.12) 0%, transparent 70%);
+  background: radial-gradient(ellipse 90% 70% at 50% 0%, rgba(255,140,0,.14) 0%, transparent 70%);
   pointer-events: none;
 }
 /* Pulsing ring behind clock */
@@ -1998,7 +1998,7 @@ ul { list-style: none; }
   position: absolute;
   width: 120px; height: 120px;
   border-radius: 50%;
-  border: 2px solid rgba(0,180,216,.3);
+  border: 2px solid rgba(255,140,0,.35);
   top: 50%; left: 50%;
   transform: translate(-50%, -50%);
   animation: smPulseRing 2.4s ease-out infinite;
@@ -2008,7 +2008,7 @@ ul { list-style: none; }
   font-size: .7rem;
   letter-spacing: .1em;
   text-transform: uppercase;
-  color: rgba(144,224,239,.6);
+  color: rgba(255,179,71,.65);
   margin-bottom: 10px;
 }
 .sumenep-time-display {
@@ -2043,7 +2043,7 @@ ul { list-style: none; }
 }
 .sumenep-timezone {
   font-size: .68rem;
-  color: rgba(144,224,239,.5);
+  color: rgba(255,179,71,.55);
   letter-spacing: .06em;
 }
 
@@ -2055,23 +2055,23 @@ ul { list-style: none; }
   animation: smFadeUp .55s .08s ease both;
 }
 .sumenep-stat-tile {
-  background: linear-gradient(145deg, #0f1f30, #0a1422);
-  border: 1px solid rgba(0,180,216,.2);
+  background: linear-gradient(145deg, #1e0a00, #150700);
+  border: 1px solid rgba(255,140,0,.22);
   border-radius: 14px;
   padding: 14px 8px;
   text-align: center;
   transition: border-color .25s, transform .25s, box-shadow .25s;
 }
 .sumenep-stat-tile:hover {
-  border-color: rgba(0,180,216,.55);
+  border-color: rgba(255,140,0,.6);
   transform: translateY(-3px);
-  box-shadow: 0 8px 24px rgba(0,180,216,.15);
+  box-shadow: 0 8px 24px rgba(255,140,0,.18);
 }
 .sumenep-stat-icon { font-size: 1.3rem; line-height: 1; margin-bottom: 6px; }
 .sumenep-stat-val {
   font-size: .95rem;
   font-weight: 800;
-  color: #00b4d8;
+  color: #ff8c00;
   line-height: 1.1;
   letter-spacing: -.01em;
 }
@@ -2093,9 +2093,9 @@ ul { list-style: none; }
 .sumenep-action-btn {
   flex: 1;
   min-width: 140px;
-  background: linear-gradient(135deg, rgba(0,180,216,.25), rgba(0,119,182,.2));
-  border: 1px solid rgba(0,180,216,.4);
-  color: #90e0ef;
+  background: linear-gradient(135deg, rgba(255,140,0,.25), rgba(255,80,0,.18));
+  border: 1px solid rgba(255,140,0,.45);
+  color: #ffb347;
   border-radius: 12px;
   padding: 10px 14px;
   font-size: .85rem;
@@ -2105,40 +2105,40 @@ ul { list-style: none; }
   text-align: center;
 }
 .sumenep-action-btn:hover {
-  background: linear-gradient(135deg, rgba(0,180,216,.4), rgba(0,119,182,.35));
-  box-shadow: 0 4px 16px rgba(0,180,216,.2);
+  background: linear-gradient(135deg, rgba(255,140,0,.42), rgba(255,80,0,.32));
+  box-shadow: 0 4px 18px rgba(255,140,0,.25);
   transform: translateY(-2px);
 }
 .sumenep-action-btn--sholat {
-  background: linear-gradient(135deg, rgba(96,58,161,.3), rgba(56,29,108,.25));
-  border-color: rgba(160,120,220,.4);
-  color: #c9a8ff;
+  background: linear-gradient(135deg, rgba(255,120,0,.22), rgba(255,60,0,.16));
+  border-color: rgba(255,140,0,.4);
+  color: #ffb347;
 }
 .sumenep-action-btn--sholat:hover {
-  background: linear-gradient(135deg, rgba(96,58,161,.5), rgba(56,29,108,.4));
-  box-shadow: 0 4px 16px rgba(160,120,220,.2);
+  background: linear-gradient(135deg, rgba(255,120,0,.4), rgba(255,60,0,.3));
+  box-shadow: 0 4px 18px rgba(255,140,0,.22);
 }
 .sumenep-action-btn--tiktok {
-  background: linear-gradient(135deg, rgba(255,0,80,.2), rgba(0,242,234,.15));
-  border-color: rgba(255,0,80,.4);
-  color: #ff6b9d;
+  background: linear-gradient(135deg, rgba(255,100,0,.22), rgba(255,140,0,.16));
+  border-color: rgba(255,140,0,.4);
+  color: #ffb347;
 }
 .sumenep-action-btn--tiktok:hover {
-  background: linear-gradient(135deg, rgba(255,0,80,.35), rgba(0,242,234,.25));
-  box-shadow: 0 4px 16px rgba(255,0,80,.2);
+  background: linear-gradient(135deg, rgba(255,100,0,.4), rgba(255,140,0,.3));
+  box-shadow: 0 4px 18px rgba(255,140,0,.22);
 }
 
 /* ---------- TikTok download section ---------- */
 .sumenep-tiktok-section {
-  background: linear-gradient(145deg, #1a0a10, #100818);
-  border: 1px solid rgba(255,0,80,.2);
+  background: linear-gradient(145deg, #1e0900, #150600);
+  border: 1px solid rgba(255,140,0,.22);
   border-radius: 18px;
   padding: 18px;
   animation: smFadeUp .6s .12s ease both;
   margin-top: 14px;
 }
 .sumenep-tiktok-section .sumenep-weather-header h3 {
-  color: #ff6b9d;
+  color: #ffb347;
 }
 .sumenep-tiktok-form {
   display: flex;
@@ -2150,7 +2150,7 @@ ul { list-style: none; }
   flex: 1;
   min-width: 200px;
   background: rgba(255,255,255,.07);
-  border: 1px solid rgba(255,0,80,.3);
+  border: 1px solid rgba(255,140,0,.3);
   color: #f0f0f0;
   border-radius: 10px;
   padding: 9px 13px;
@@ -2159,11 +2159,11 @@ ul { list-style: none; }
   transition: border-color .2s;
 }
 .sumenep-tiktok-input:focus {
-  border-color: rgba(255,0,80,.7);
+  border-color: rgba(255,140,0,.7);
 }
 .sumenep-tiktok-input::placeholder { color: rgba(255,255,255,.35); }
 .sumenep-tiktok-dl-btn {
-  background: linear-gradient(135deg, #ff0050, #7928ca);
+  background: linear-gradient(135deg, #ff8c00, #e65c00);
   color: #fff;
   border: none;
   border-radius: 10px;
@@ -2177,13 +2177,13 @@ ul { list-style: none; }
 .sumenep-tiktok-dl-btn:disabled { opacity: .5; cursor: not-allowed; transform: none; }
 .sumenep-tiktok-processing {
   font-size: .83rem;
-  color: #ff6b9d;
+  color: #ffb347;
   margin: 8px 0;
   animation: smPulse 1.4s ease infinite;
 }
 .sumenep-tiktok-result-card {
   background: rgba(255,255,255,.05);
-  border: 1px solid rgba(255,0,80,.15);
+  border: 1px solid rgba(255,140,0,.18);
   border-radius: 12px;
   padding: 14px;
   margin-top: 10px;
@@ -2207,12 +2207,12 @@ ul { list-style: none; }
 }
 .sumenep-tiktok-author {
   font-size: .75rem;
-  color: #ff6b9d;
+  color: #ffb347;
   margin: 0 0 10px;
 }
 .sumenep-tiktok-download-link {
   display: inline-block;
-  background: linear-gradient(135deg, #ff0050, #7928ca);
+  background: linear-gradient(135deg, #ff8c00, #e65c00);
   color: #fff;
   text-decoration: none;
   border-radius: 10px;
@@ -2230,27 +2230,27 @@ ul { list-style: none; }
 
 /* ---------- Weather section ---------- */
 .sumenep-weather-section {
-  background: linear-gradient(145deg, #0f1f30, #0a1422);
-  border: 1px solid rgba(0,180,216,.2);
+  background: linear-gradient(145deg, #1e0900, #150600);
+  border: 1px solid rgba(255,140,0,.22);
   border-radius: 18px;
   padding: 18px;
   animation: smFadeUp .6s .12s ease both;
 }
 /* ---------- Prayer schedule section ---------- */
 .sumenep-sholat-section {
-  background: linear-gradient(145deg, #160d2a, #0e0820);
-  border: 1px solid rgba(160,120,220,.2);
+  background: linear-gradient(145deg, #1e0900, #150600);
+  border: 1px solid rgba(255,140,0,.22);
   border-radius: 18px;
   padding: 18px;
   animation: smFadeUp .6s .12s ease both;
   margin-top: 14px;
 }
 .sumenep-sholat-section .sumenep-weather-header h3 {
-  color: #c9a8ff;
+  color: #ffb347;
 }
 .sumenep-sholat-meta {
   font-size: .78rem;
-  color: rgba(200,170,255,.6);
+  color: rgba(255,179,71,.6);
   margin: 0 0 12px;
   text-align: center;
 }
@@ -2260,21 +2260,21 @@ ul { list-style: none; }
   gap: 8px;
 }
 .sumenep-sholat-tile {
-  background: rgba(160,120,220,.1);
-  border: 1px solid rgba(160,120,220,.2);
+  background: rgba(255,140,0,.1);
+  border: 1px solid rgba(255,140,0,.22);
   border-radius: 12px;
   padding: 10px 6px;
   text-align: center;
   transition: background .2s;
 }
 .sumenep-sholat-tile:hover {
-  background: rgba(160,120,220,.2);
+  background: rgba(255,140,0,.22);
 }
 .sumenep-sholat-icon { font-size: 1.2rem; line-height: 1; margin-bottom: 4px; }
 .sumenep-sholat-label {
   font-size: .65rem;
   font-weight: 700;
-  color: rgba(200,170,255,.7);
+  color: rgba(255,179,71,.75);
   text-transform: uppercase;
   letter-spacing: .04em;
   margin-bottom: 4px;
@@ -2282,7 +2282,7 @@ ul { list-style: none; }
 .sumenep-sholat-time {
   font-size: .95rem;
   font-weight: 800;
-  color: #c9a8ff;
+  color: #ffb347;
   letter-spacing: .04em;
 }
 
@@ -2296,13 +2296,13 @@ ul { list-style: none; }
   margin: 0;
   font-size: .95rem;
   font-weight: 700;
-  color: #90e0ef;
+  color: #ffb347;
   letter-spacing: .02em;
 }
 .sumenep-refresh-btn {
-  background: rgba(0,180,216,.15);
-  border: 1px solid rgba(0,180,216,.35);
-  color: #00b4d8;
+  background: rgba(255,140,0,.15);
+  border: 1px solid rgba(255,140,0,.38);
+  color: #ff8c00;
   border-radius: 50%;
   width: 32px;
   height: 32px;
@@ -2314,7 +2314,7 @@ ul { list-style: none; }
   transition: background .2s, transform .4s;
 }
 .sumenep-refresh-btn:hover {
-  background: rgba(0,180,216,.3);
+  background: rgba(255,140,0,.3);
   transform: rotate(180deg);
 }
 .sumenep-refresh-btn.loading { animation: smSpin .8s linear infinite; }
@@ -2330,15 +2330,15 @@ ul { list-style: none; }
 
 .sumenep-weather-update {
   font-size: .7rem;
-  color: rgba(144,224,239,.5);
+  color: rgba(255,179,71,.55);
   margin: 0 0 12px;
   letter-spacing: .03em;
 }
 
 /* Forecast cards */
 .sumenep-forecast-card {
-  background: rgba(0,180,216,.06);
-  border: 1px solid rgba(0,180,216,.18);
+  background: rgba(255,140,0,.06);
+  border: 1px solid rgba(255,140,0,.18);
   border-radius: 14px;
   padding: 14px 16px;
   margin-bottom: 10px;
@@ -2349,8 +2349,8 @@ ul { list-style: none; }
   transition: border-color .25s, background .25s, transform .25s;
 }
 .sumenep-forecast-card:hover {
-  border-color: rgba(0,180,216,.45);
-  background: rgba(0,180,216,.12);
+  border-color: rgba(255,140,0,.48);
+  background: rgba(255,140,0,.12);
   transform: translateX(4px);
 }
 .sumenep-forecast-card:last-child { margin-bottom: 0; }
@@ -2360,7 +2360,7 @@ ul { list-style: none; }
   height: 48px;
   object-fit: contain;
   border-radius: 10px;
-  background: rgba(0,180,216,.08);
+  background: rgba(255,140,0,.08);
   padding: 4px;
 }
 .sumenep-forecast-img-placeholder {
@@ -2370,13 +2370,13 @@ ul { list-style: none; }
   align-items: center;
   justify-content: center;
   font-size: 1.9rem;
-  background: rgba(0,180,216,.08);
+  background: rgba(255,140,0,.08);
   border-radius: 10px;
 }
 .sumenep-forecast-info { min-width: 0; }
 .sumenep-forecast-time {
   font-size: .68rem;
-  color: rgba(144,224,239,.55);
+  color: rgba(255,179,71,.6);
   margin-bottom: 3px;
   letter-spacing: .04em;
   text-transform: uppercase;
@@ -2397,9 +2397,9 @@ ul { list-style: none; }
 .sumenep-forecast-details { display: flex; flex-wrap: wrap; gap: 5px 14px; }
 .sumenep-forecast-detail {
   font-size: .7rem;
-  color: rgba(144,224,239,.65);
-  background: rgba(0,180,216,.08);
-  border: 1px solid rgba(0,180,216,.15);
+  color: rgba(255,179,71,.7);
+  background: rgba(255,140,0,.08);
+  border: 1px solid rgba(255,140,0,.18);
   border-radius: 6px;
   padding: 2px 8px;
 }
@@ -2414,7 +2414,7 @@ ul { list-style: none; }
 .weather-loading {
   display: block;
   text-align: center;
-  color: rgba(144,224,239,.6);
+  color: rgba(255,179,71,.65);
   font-size: .82rem;
   padding: 16px 0;
 }
