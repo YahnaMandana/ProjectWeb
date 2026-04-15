@@ -2123,9 +2123,14 @@ ul { list-style: none; }
   border-color: rgba(255,140,0,.4);
   color: #ffb347;
 }
-.sumenep-action-btn--tiktok:hover {
-  background: linear-gradient(135deg, rgba(255,100,0,.4), rgba(255,140,0,.3));
-  box-shadow: 0 4px 18px rgba(255,140,0,.22);
+.sumenep-action-btn--facebook {
+  background: linear-gradient(135deg, rgba(24,119,242,.22), rgba(66,153,255,.16));
+  border-color: rgba(24,119,242,.4);
+  color: #6abaff;
+}
+.sumenep-action-btn--facebook:hover {
+  background: linear-gradient(135deg, rgba(24,119,242,.4), rgba(66,153,255,.3));
+  box-shadow: 0 4px 18px rgba(24,119,242,.22);
 }
 .sumenep-action-btn--yakult {
   background: linear-gradient(135deg, rgba(255,160,0,.22), rgba(255,200,50,.16));
@@ -2235,6 +2240,41 @@ ul { list-style: none; }
   font-size: .82rem;
   color: #ff6b6b;
   margin-top: 8px;
+}
+
+/* ---------- Facebook download section ---------- */
+.sumenep-facebook-section {
+  background: linear-gradient(145deg, #00091e, #000d2e);
+  border: 1px solid rgba(24,119,242,.25);
+  border-radius: 18px;
+  padding: 18px;
+  animation: smFadeUp .6s .12s ease both;
+  margin-top: 14px;
+}
+.sumenep-facebook-section .sumenep-weather-header h3 {
+  color: #6abaff;
+}
+.sumenep-facebook-result-card {
+  border-color: rgba(24,119,242,.22);
+}
+.sumenep-facebook-desc {
+  font-size: .78rem;
+  color: rgba(255,255,255,.55);
+  margin: 4px 0 10px;
+  white-space: pre-line;
+  line-height: 1.5;
+}
+.sumenep-facebook-links {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 4px;
+}
+.sumenep-facebook-dl-sd {
+  background: linear-gradient(135deg, #1877f2, #0e5fcc);
+}
+.sumenep-facebook-dl-hd {
+  background: linear-gradient(135deg, #42a5f5, #1565c0);
 }
 
 /* ---------- Yakult Calculator section ---------- */

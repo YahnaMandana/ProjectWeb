@@ -146,6 +146,7 @@
           <button class="sumenep-action-btn" id="sumenepCekCuacaBtn">🌤️ Info Cuaca Sumenep</button>
           <button class="sumenep-action-btn sumenep-action-btn--sholat" id="sumenepCekSholatBtn">🕌 Jadwal Sholat Sumenep</button>
           <button class="sumenep-action-btn sumenep-action-btn--tiktok" id="sumenepDownloadTiktokBtn">🎵 Download Video TikTok</button>
+          <button class="sumenep-action-btn sumenep-action-btn--facebook" id="sumenepDownloadFacebookBtn">📘 Download Video Facebook</button>
           <button class="sumenep-action-btn sumenep-action-btn--yakult" id="sumenepKalkulatorYakultBtn">🥛 Kalkulator Yakult</button>
         </div>
 
@@ -187,6 +188,18 @@
             <button class="sumenep-tiktok-dl-btn" id="sumenepTiktokDlBtn">⬇️ Download</button>
           </div>
           <div id="sumenepTiktokResult"></div>
+        </div>
+
+        <!-- Facebook Download section -->
+        <div class="sumenep-facebook-section" id="sumenepFacebookSection" style="display:none;">
+          <div class="sumenep-weather-header">
+            <h3>📘 Download Video Facebook</h3>
+          </div>
+          <div class="sumenep-tiktok-form">
+            <input type="url" id="sumenepFacebookUrl" class="sumenep-tiktok-input" placeholder="Masukkan link video Facebook di sini…" autocomplete="off" />
+            <button class="sumenep-tiktok-dl-btn" id="sumenepFacebookDlBtn">⬇️ Download</button>
+          </div>
+          <div id="sumenepFacebookResult"></div>
         </div>
 
         <!-- Yakult Calculator section -->
@@ -360,6 +373,18 @@
 
       var tiktokDlBtn = document.getElementById('sumenepTiktokDlBtn');
       if (tiktokDlBtn) tiktokDlBtn.addEventListener('click', _downloadTiktokVideo);
+
+      var downloadFacebookBtn = document.getElementById('sumenepDownloadFacebookBtn');
+      if (downloadFacebookBtn) {
+        downloadFacebookBtn.addEventListener('click', function () {
+          var section = document.getElementById('sumenepFacebookSection');
+          if (!section) return;
+          section.style.display = section.style.display === 'none' ? '' : 'none';
+        });
+      }
+
+      var facebookDlBtn = document.getElementById('sumenepFacebookDlBtn');
+      if (facebookDlBtn) facebookDlBtn.addEventListener('click', _downloadFacebookVideo);
 
       // ---- Yakult Calculator ----
       var yakultSection = document.getElementById('sumenepYakultSection');

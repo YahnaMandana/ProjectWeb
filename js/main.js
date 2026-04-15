@@ -1025,6 +1025,97 @@ async function _downloadTiktokVideo() {
   }
 }
 
+async function _downloadFacebookVideo() {
+  const urlInput = document.getElementById('sumenepFacebookUrl');
+  const dlBtn    = document.getElementById('sumenepFacebookDlBtn');
+  const result   = document.getElementById('sumenepFacebookResult');
+  if (!urlInput || !result) return;
+
+  const url = urlInput.value.trim();
+  if (!url) {
+    result.innerHTML = '<p class="sumenep-tiktok-error">⚠️ Masukkan link video Facebook terlebih dahulu.</p>';
+    return;
+  }
+
+  if (!/^https?:\/\/(www\.|m\.|web\.|mbasic\.)?facebook\.com\//i.test(url) &&
+      !/^https?:\/\/fb\.watch\//i.test(url)) {
+    result.innerHTML = '<p class="sumenep-tiktok-error">⚠️ URL tidak valid. Masukkan link video dari Facebook.</p>';
+    return;
+  }
+
+  if (dlBtn) dlBtn.disabled = true;
+  result.innerHTML = '<p class="sumenep-tiktok-processing">⏳ Kustini AI sedang memproses download video…</p>';
+
+  try {
+    const res  = await fetch('https://api.danzy.web.id/api/download/facebook?url=' + encodeURIComponent(url));
+    const data = await res.json();
+
+    if (!data.status || !data.data) {
+      result.innerHTML = '<p class="sumenep-tiktok-error">⚠️ Gagal mengambil data. Pastikan link video Facebook benar.</p>';
+      return;
+    }
+
+    const { title, description, sd, hd } = data.data;
+
+    const card = document.createElement('div');
+    card.className = 'sumenep-tiktok-result-card sumenep-facebook-result-card';
+
+    if (title && title !== 'No video title') {
+      const titleEl = document.createElement('p');
+      titleEl.className = 'sumenep-tiktok-title';
+      titleEl.textContent = title;
+      card.appendChild(titleEl);
+    }
+
+    if (description) {
+      const descEl = document.createElement('p');
+      descEl.className = 'sumenep-facebook-desc';
+      descEl.textContent = description;
+      card.appendChild(descEl);
+    }
+
+    const linksWrap = document.createElement('div');
+    linksWrap.className = 'sumenep-facebook-links';
+
+    if (sd) {
+      const aSD = document.createElement('a');
+      aSD.className = 'sumenep-tiktok-download-link sumenep-facebook-dl-sd';
+      aSD.href = sd;
+      aSD.target = '_blank';
+      aSD.rel = 'noopener noreferrer';
+      aSD.textContent = '⬇️ Download SD';
+      linksWrap.appendChild(aSD);
+    }
+
+    if (hd) {
+      const aHD = document.createElement('a');
+      aHD.className = 'sumenep-tiktok-download-link sumenep-facebook-dl-hd';
+      aHD.href = hd;
+      aHD.target = '_blank';
+      aHD.rel = 'noopener noreferrer';
+      aHD.textContent = '⬇️ Download HD';
+      linksWrap.appendChild(aHD);
+    }
+
+    if (!sd && !hd) {
+      const errEl = document.createElement('p');
+      errEl.className = 'sumenep-tiktok-error';
+      errEl.textContent = '⚠️ Link download tidak tersedia.';
+      card.appendChild(errEl);
+    } else {
+      card.appendChild(linksWrap);
+    }
+
+    result.innerHTML = '';
+    result.appendChild(card);
+  } catch (err) {
+    console.error('[Facebook] Gagal download:', err);
+    result.innerHTML = '<p class="sumenep-tiktok-error">⚠️ Terjadi kesalahan. Coba lagi nanti.</p>';
+  } finally {
+    if (dlBtn) dlBtn.disabled = false;
+  }
+}
+
 function initSumenepModal() {
   const overlay  = document.getElementById('sumenepModalOverlay');
   const closeBtn = document.getElementById('sumenepModalClose');
