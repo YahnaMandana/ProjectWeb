@@ -1046,15 +1046,6 @@ async function _downloadFacebookVideo() {
   if (dlBtn) dlBtn.disabled = true;
   result.innerHTML = '<p class="sumenep-tiktok-processing">⏳ Kustini AI sedang memproses download video…</p>';
 
-  function escHtml(str) {
-    return String(str)
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;')
-      .replace(/'/g, '&#39;');
-  }
-
   try {
     const res  = await fetch('https://api.danzy.web.id/api/download/facebook?url=' + encodeURIComponent(url));
     const data = await res.json();
