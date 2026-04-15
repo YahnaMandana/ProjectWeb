@@ -146,6 +146,7 @@
           <button class="sumenep-action-btn" id="sumenepCekCuacaBtn">🌤️ Info Cuaca Sumenep</button>
           <button class="sumenep-action-btn sumenep-action-btn--sholat" id="sumenepCekSholatBtn">🕌 Jadwal Sholat Sumenep</button>
           <button class="sumenep-action-btn sumenep-action-btn--tiktok" id="sumenepDownloadTiktokBtn">🎵 Download Video TikTok</button>
+          <button class="sumenep-action-btn sumenep-action-btn--yakult" id="sumenepKalkulatorYakultBtn">🥛 Kalkulator Yakult</button>
         </div>
 
         <!-- Weather section -->
@@ -186,6 +187,72 @@
             <button class="sumenep-tiktok-dl-btn" id="sumenepTiktokDlBtn">⬇️ Download</button>
           </div>
           <div id="sumenepTiktokResult"></div>
+        </div>
+
+        <!-- Yakult Calculator section -->
+        <div class="sumenep-yakult-section" id="sumenepYakultSection" style="display:none;">
+          <div class="sumenep-weather-header">
+            <h3>🥛 Kalkulator Yakult</h3>
+          </div>
+
+          <!-- Toko / Konsumen toggle -->
+          <div class="sumenep-yakult-type-toggle">
+            <button class="sumenep-yakult-type-btn active" data-type="toko">🏪 Harga Toko</button>
+            <button class="sumenep-yakult-type-btn" data-type="konsumen">🧑‍🤝‍🧑 Harga Konsumen</button>
+          </div>
+
+          <!-- Variant rows -->
+          <div class="sumenep-yakult-rows">
+            <div class="sumenep-yakult-row" data-variant="ori">
+              <div class="sumenep-yakult-row-icon">🥛</div>
+              <div class="sumenep-yakult-row-info">
+                <div class="sumenep-yakult-row-name">Yakult Original</div>
+                <div class="sumenep-yakult-row-price" id="priceLabelOri">Rp 10.200 / botol</div>
+              </div>
+              <div class="sumenep-yakult-qty-ctrl">
+                <button class="sumenep-yakult-qty-btn" data-action="minus" data-target="qtyOri">−</button>
+                <span class="sumenep-yakult-qty-val" id="qtyOri">0</span>
+                <button class="sumenep-yakult-qty-btn" data-action="plus" data-target="qtyOri">+</button>
+              </div>
+            </div>
+            <div class="sumenep-yakult-row" data-variant="mangga">
+              <div class="sumenep-yakult-row-icon">🥭</div>
+              <div class="sumenep-yakult-row-info">
+                <div class="sumenep-yakult-row-name">Yakult Mangga</div>
+                <div class="sumenep-yakult-row-price" id="priceLabeMangga">Rp 10.500 / botol</div>
+              </div>
+              <div class="sumenep-yakult-qty-ctrl">
+                <button class="sumenep-yakult-qty-btn" data-action="minus" data-target="qtyMangga">−</button>
+                <span class="sumenep-yakult-qty-val" id="qtyMangga">0</span>
+                <button class="sumenep-yakult-qty-btn" data-action="plus" data-target="qtyMangga">+</button>
+              </div>
+            </div>
+            <div class="sumenep-yakult-row" data-variant="light">
+              <div class="sumenep-yakult-row-icon">💚</div>
+              <div class="sumenep-yakult-row-info">
+                <div class="sumenep-yakult-row-name">Yakult Light</div>
+                <div class="sumenep-yakult-row-price" id="priceLabelLight">Rp 12.500 / botol</div>
+              </div>
+              <div class="sumenep-yakult-qty-ctrl">
+                <button class="sumenep-yakult-qty-btn" data-action="minus" data-target="qtyLight">−</button>
+                <span class="sumenep-yakult-qty-val" id="qtyLight">0</span>
+                <button class="sumenep-yakult-qty-btn" data-action="plus" data-target="qtyLight">+</button>
+              </div>
+            </div>
+          </div>
+
+          <button class="sumenep-yakult-calc-btn" id="sumenepHitungYakultBtn">🧮 Hitung Total</button>
+
+          <!-- Result -->
+          <div class="sumenep-yakult-result" id="sumenepYakultResult">
+            <div class="sumenep-yakult-result-title" id="sumenepYakultResultTitle">Rincian Belanja</div>
+            <div class="sumenep-yakult-result-rows" id="sumenepYakultResultRows"></div>
+            <hr class="sumenep-yakult-result-divider" />
+            <div class="sumenep-yakult-result-total">
+              <span>Total</span>
+              <span id="sumenepYakultResultTotal">Rp 0</span>
+            </div>
+          </div>
         </div>
 
       </div><!-- /body -->
@@ -293,6 +360,117 @@
 
       var tiktokDlBtn = document.getElementById('sumenepTiktokDlBtn');
       if (tiktokDlBtn) tiktokDlBtn.addEventListener('click', _downloadTiktokVideo);
+
+      // ---- Yakult Calculator ----
+      var yakultSection = document.getElementById('sumenepYakultSection');
+      var kalkulatorBtn = document.getElementById('sumenepKalkulatorYakultBtn');
+      if (kalkulatorBtn) {
+        kalkulatorBtn.addEventListener('click', function () {
+          if (!yakultSection) return;
+          yakultSection.style.display = yakultSection.style.display === 'none' ? '' : 'none';
+        });
+      }
+
+      // Prices: [toko, konsumen]
+      var YAKULT_PRICES = {
+        ori:    [10200, 10500],
+        mangga: [10500, 11000],
+        light:  [12500, 13000]
+      };
+      var YAKULT_NAMES = {
+        ori: 'Yakult Original',
+        mangga: 'Yakult Mangga',
+        light: 'Yakult Light'
+      };
+      var yakultType = 'toko'; // 'toko' or 'konsumen'
+      var yakultQty  = { ori: 0, mangga: 0, light: 0 };
+
+      function _fmtRupiah(n) {
+        return 'Rp ' + n.toLocaleString('id-ID');
+      }
+
+      function _getPriceIndex() {
+        return yakultType === 'toko' ? 0 : 1;
+      }
+
+      function _updatePriceLabels() {
+        var idx = _getPriceIndex();
+        var labelMap = {
+          ori:    document.getElementById('priceLabelOri'),
+          mangga: document.getElementById('priceLabeMangga'),
+          light:  document.getElementById('priceLabelLight')
+        };
+        Object.keys(labelMap).forEach(function (k) {
+          if (labelMap[k]) {
+            labelMap[k].textContent = _fmtRupiah(YAKULT_PRICES[k][idx]) + ' / botol';
+          }
+        });
+      }
+
+      // Type toggle buttons
+      document.querySelectorAll('.sumenep-yakult-type-btn').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          document.querySelectorAll('.sumenep-yakult-type-btn').forEach(function (b) { b.classList.remove('active'); });
+          btn.classList.add('active');
+          yakultType = btn.dataset.type;
+          _updatePriceLabels();
+          // hide result when switching type
+          var res = document.getElementById('sumenepYakultResult');
+          if (res) res.style.display = 'none';
+        });
+      });
+
+      // Quantity ± buttons
+      document.querySelectorAll('.sumenep-yakult-qty-btn').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var targetId = btn.dataset.target; // e.g. 'qtyOri'
+          var key = targetId.replace('qty', '').toLowerCase(); // 'ori' / 'mangga' / 'light'
+          if (btn.dataset.action === 'plus') {
+            yakultQty[key] = (yakultQty[key] || 0) + 1;
+          } else {
+            yakultQty[key] = Math.max(0, (yakultQty[key] || 0) - 1);
+          }
+          var el = document.getElementById(targetId);
+          if (el) el.textContent = yakultQty[key];
+        });
+      });
+
+      // Calculate button
+      var hitungBtn = document.getElementById('sumenepHitungYakultBtn');
+      if (hitungBtn) {
+        hitungBtn.addEventListener('click', function () {
+          var idx = _getPriceIndex();
+          var total = 0;
+          var rows = '';
+          var hasItem = false;
+          ['ori', 'mangga', 'light'].forEach(function (k) {
+            var qty = yakultQty[k] || 0;
+            if (qty > 0) {
+              hasItem = true;
+              var subtotal = qty * YAKULT_PRICES[k][idx];
+              total += subtotal;
+              rows += '<div class="sumenep-yakult-result-row">' +
+                '<span>' + YAKULT_NAMES[k] + ' × ' + qty + '</span>' +
+                '<span>' + _fmtRupiah(subtotal) + '</span>' +
+              '</div>';
+            }
+          });
+
+          var resultEl = document.getElementById('sumenepYakultResult');
+          if (!resultEl) return;
+          if (!hasItem) {
+            resultEl.style.display = 'none';
+            return;
+          }
+          var titleEl = document.getElementById('sumenepYakultResultTitle');
+          var rowsEl  = document.getElementById('sumenepYakultResultRows');
+          var totalEl = document.getElementById('sumenepYakultResultTotal');
+          if (titleEl) titleEl.textContent = 'Rincian — Harga ' + (yakultType === 'toko' ? 'Toko' : 'Konsumen');
+          if (rowsEl)  rowsEl.innerHTML = rows;
+          if (totalEl) totalEl.textContent = _fmtRupiah(total);
+          resultEl.style.display = '';
+        });
+      }
     })();
   </script>
 </body>
