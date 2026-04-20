@@ -173,11 +173,14 @@ function applyFilters() {
 function initContactForm() {
   const form = document.getElementById('contactForm');
   if (!form) return;
+  const IP_FETCH_TIMEOUT_MS = 4000;
+  let cachedPublicIp = '';
+  let ipRequestPromise = null;
 
-  async function getPublicIp() {
+  async function requestPublicIp() {
     try {
       const ctrl = new AbortController();
-      const timeoutId = setTimeout(() => ctrl.abort(), 4000);
+      const timeoutId = setTimeout(() => ctrl.abort(), IP_FETCH_TIMEOUT_MS);
       const res = await fetch('https://api.ipify.org?format=json', {
         signal: ctrl.signal,
         cache: 'no-store',
@@ -191,6 +194,23 @@ function initContactForm() {
       return '-';
     }
   }
+
+  async function getPublicIp() {
+    if (cachedPublicIp) return cachedPublicIp;
+    if (!ipRequestPromise) {
+      ipRequestPromise = requestPublicIp()
+        .then((ip) => {
+          cachedPublicIp = ip || '-';
+          return cachedPublicIp;
+        })
+        .finally(() => {
+          ipRequestPromise = null;
+        });
+    }
+    return ipRequestPromise;
+  }
+
+  void getPublicIp();
 
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
