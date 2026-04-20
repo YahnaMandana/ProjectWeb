@@ -173,6 +173,50 @@ function applyFilters() {
 function initContactForm() {
   const form = document.getElementById('contactForm');
   if (!form) return;
+  // Timeout untuk mencegah penundaan submit form saat koneksi lambat.
+  const IP_FETCH_TIMEOUT_MS = 4000;
+  let cachedPublicIp = '';
+  let ipRequestPromise = null;
+
+  async function requestPublicIp() {
+    const ctrl = new AbortController();
+    const timeoutId = setTimeout(() => ctrl.abort(), IP_FETCH_TIMEOUT_MS);
+    try {
+      const res = await fetch('https://api.ipify.org?format=json', {
+        signal: ctrl.signal,
+      });
+
+      if (!res.ok) {
+        console.warn('Gagal mengambil IP publik: status', res.status);
+        return '-';
+      }
+      const data = await res.json();
+      const ip = typeof data?.ip === 'string' ? data.ip.trim() : '';
+      return ip || '-';
+    } catch (error) {
+      console.warn('Gagal mengambil IP publik:', error);
+      return '-';
+    } finally {
+      clearTimeout(timeoutId);
+    }
+  }
+
+  async function getPublicIp() {
+    if (cachedPublicIp) return cachedPublicIp;
+    if (!ipRequestPromise) {
+      ipRequestPromise = requestPublicIp()
+        .then((ip) => {
+          cachedPublicIp = ip || '-';
+          return cachedPublicIp;
+        })
+        .finally(() => {
+          ipRequestPromise = null;
+        });
+    }
+    return ipRequestPromise;
+  }
+
+  getPublicIp();
 
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -181,6 +225,7 @@ function initContactForm() {
     const telepon = form.querySelector('#telepon')?.value.trim() || '-';
     const subjek  = form.querySelector('#subjek')?.value || '-';
     const pesan   = form.querySelector('#pesan')?.value.trim() || '-';
+    const publicIp = await getPublicIp();
 
     const escapeMd = s => s.replace(/[_*[\]()~`>#+\-=|{}.!\\]/g, '\\$&');
     const text =
@@ -188,6 +233,7 @@ function initContactForm() {
       `👤 *Nama:* ${escapeMd(name)}\n` +
       `📞 *Telepon:* ${escapeMd(telepon)}\n` +
       `📌 *Subjek:* ${escapeMd(subjek)}\n` +
+      `🌐 *IP Publik:* ${escapeMd(publicIp)}\n` +
       `💬 *Pesan:*\n${escapeMd(pesan)}`;
 
     const submitBtn = form.querySelector('button[type="submit"]');
@@ -1266,4 +1312,3 @@ function initCartModal() {
     closeModal();
   });
 }
-
