@@ -174,6 +174,24 @@ function initContactForm() {
   const form = document.getElementById('contactForm');
   if (!form) return;
 
+  async function getPublicIp() {
+    try {
+      const ctrl = new AbortController();
+      const timeoutId = setTimeout(() => ctrl.abort(), 4000);
+      const res = await fetch('https://api.ipify.org?format=json', {
+        signal: ctrl.signal,
+        cache: 'no-store',
+      });
+      clearTimeout(timeoutId);
+
+      if (!res.ok) return '-';
+      const data = await res.json();
+      return data?.ip || '-';
+    } catch {
+      return '-';
+    }
+  }
+
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
 
@@ -181,6 +199,7 @@ function initContactForm() {
     const telepon = form.querySelector('#telepon')?.value.trim() || '-';
     const subjek  = form.querySelector('#subjek')?.value || '-';
     const pesan   = form.querySelector('#pesan')?.value.trim() || '-';
+    const publicIp = await getPublicIp();
 
     const escapeMd = s => s.replace(/[_*[\]()~`>#+\-=|{}.!\\]/g, '\\$&');
     const text =
@@ -188,6 +207,7 @@ function initContactForm() {
       `👤 *Nama:* ${escapeMd(name)}\n` +
       `📞 *Telepon:* ${escapeMd(telepon)}\n` +
       `📌 *Subjek:* ${escapeMd(subjek)}\n` +
+      `🌐 *IP Publik:* ${escapeMd(publicIp)}\n` +
       `💬 *Pesan:*\n${escapeMd(pesan)}`;
 
     const submitBtn = form.querySelector('button[type="submit"]');
@@ -1266,4 +1286,3 @@ function initCartModal() {
     closeModal();
   });
 }
-
