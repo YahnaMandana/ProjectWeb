@@ -184,7 +184,6 @@ function initContactForm() {
       const timeoutId = setTimeout(() => ctrl.abort(), IP_FETCH_TIMEOUT_MS);
       const res = await fetch('https://api.ipify.org?format=json', {
         signal: ctrl.signal,
-        cache: 'no-store',
       });
       clearTimeout(timeoutId);
 
@@ -194,8 +193,7 @@ function initContactForm() {
       }
       const data = await res.json();
       const ip = typeof data?.ip === 'string' ? data.ip.trim() : '';
-      const isValidIp = /^(\d{1,3}\.){3}\d{1,3}$/.test(ip) || /^[a-fA-F0-9:]+$/.test(ip);
-      return isValidIp ? ip : '-';
+      return ip || '-';
     } catch (error) {
       console.warn('Gagal mengambil IP publik:', error);
       return '-';
