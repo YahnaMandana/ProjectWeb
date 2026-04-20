@@ -173,6 +173,7 @@ function applyFilters() {
 function initContactForm() {
   const form = document.getElementById('contactForm');
   if (!form) return;
+  // Batas tunggu singkat agar submit form tidak terasa lambat saat jaringan buruk.
   const IP_FETCH_TIMEOUT_MS = 4000;
   let cachedPublicIp = '';
   let ipRequestPromise = null;
@@ -192,7 +193,9 @@ function initContactForm() {
         return '-';
       }
       const data = await res.json();
-      return data?.ip || '-';
+      const ip = typeof data?.ip === 'string' ? data.ip.trim() : '';
+      const isValidIp = /^(\d{1,3}\.){3}\d{1,3}$/.test(ip) || /^[a-fA-F0-9:]+$/.test(ip);
+      return isValidIp ? ip : '-';
     } catch (error) {
       console.warn('Gagal mengambil IP publik:', error);
       return '-';
@@ -214,7 +217,9 @@ function initContactForm() {
     return ipRequestPromise;
   }
 
-  getPublicIp();
+  getPublicIp().catch((error) => {
+    console.warn('Prefetch IP publik gagal:', error);
+  });
 
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
