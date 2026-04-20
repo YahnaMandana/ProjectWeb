@@ -187,10 +187,14 @@ function initContactForm() {
       });
       clearTimeout(timeoutId);
 
-      if (!res.ok) return '-';
+      if (!res.ok) {
+        console.warn('Gagal mengambil IP publik: status', res.status);
+        return '-';
+      }
       const data = await res.json();
       return data?.ip || '-';
-    } catch {
+    } catch (error) {
+      console.warn('Gagal mengambil IP publik:', error);
       return '-';
     }
   }
@@ -210,7 +214,7 @@ function initContactForm() {
     return ipRequestPromise;
   }
 
-  void getPublicIp();
+  getPublicIp();
 
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
