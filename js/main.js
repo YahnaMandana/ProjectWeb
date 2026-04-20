@@ -173,19 +173,18 @@ function applyFilters() {
 function initContactForm() {
   const form = document.getElementById('contactForm');
   if (!form) return;
-  // Batas tunggu singkat agar submit form tidak terasa lambat saat jaringan buruk.
+  // Timeout untuk mencegah penundaan submit form saat koneksi lambat.
   const IP_FETCH_TIMEOUT_MS = 4000;
   let cachedPublicIp = '';
   let ipRequestPromise = null;
 
   async function requestPublicIp() {
+    const ctrl = new AbortController();
+    const timeoutId = setTimeout(() => ctrl.abort(), IP_FETCH_TIMEOUT_MS);
     try {
-      const ctrl = new AbortController();
-      const timeoutId = setTimeout(() => ctrl.abort(), IP_FETCH_TIMEOUT_MS);
       const res = await fetch('https://api.ipify.org?format=json', {
         signal: ctrl.signal,
       });
-      clearTimeout(timeoutId);
 
       if (!res.ok) {
         console.warn('Gagal mengambil IP publik: status', res.status);
@@ -197,6 +196,8 @@ function initContactForm() {
     } catch (error) {
       console.warn('Gagal mengambil IP publik:', error);
       return '-';
+    } finally {
+      clearTimeout(timeoutId);
     }
   }
 
@@ -215,9 +216,7 @@ function initContactForm() {
     return ipRequestPromise;
   }
 
-  getPublicIp().catch((error) => {
-    console.warn('Prefetch IP publik gagal:', error);
-  });
+  getPublicIp();
 
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
