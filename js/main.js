@@ -1016,9 +1016,6 @@ async function _checkXlAxisPackageInfo() {
   if (checkBtn) checkBtn.disabled = true;
   result.innerHTML = '<p class="sumenep-tiktok-processing">⏳ Sedang cek info kuota dan masa aktif…</p>';
 
-  const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), XL_AXIS_API_TIMEOUT_MS);
-
   function asText(v, fallback) {
     if (v === null || v === undefined || v === '') return fallback || '-';
     return String(v);
@@ -1037,13 +1034,48 @@ async function _checkXlAxisPackageInfo() {
     url.searchParams.set('check', 'package');
     url.searchParams.set('number', normalizedNumber);
     url.searchParams.set('version', '2');
+    const directUrl = url.toString();
+    const requestUrls = [
+      directUrl,
+      'https://api.allorigins.win/raw?url=' + encodeURIComponent(directUrl),
+      'https://corsproxy.io/?' + encodeURIComponent(directUrl)
+    ];
 
-    const res = await fetch(url.toString(), { signal: controller.signal });
-    if (!res.ok) throw new Error('Gagal menghubungi server');
+    async function fetchJsonWithTimeout(requestUrl) {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), XL_AXIS_API_TIMEOUT_MS);
+      try {
+        const res = await fetch(requestUrl, {
+          signal: controller.signal,
+          headers: { Accept: 'application/json' }
+        });
+        if (!res.ok) throw new Error('Gagal menghubungi server');
+        const raw = await res.text();
+        return JSON.parse(raw);
+      } catch (err) {
+        if (err && err.name === 'SyntaxError') {
+          throw new Error('Respons server tidak valid');
+        }
+        throw err;
+      } finally {
+        clearTimeout(timeoutId);
+      }
+    }
 
-    const data = await res.json();
+    let data = null;
+    let lastError = null;
+    for (const requestUrl of requestUrls) {
+      try {
+        data = await fetchJsonWithTimeout(requestUrl);
+        if (data && data.success) break;
+        lastError = new Error((data && data.message) || 'Gagal cek paket');
+      } catch (err) {
+        lastError = err;
+      }
+    }
+
     if (!data || !data.success) {
-      throw new Error((data && data.message) || 'Gagal cek paket');
+      throw lastError || new Error('Gagal cek paket');
     }
 
     const info = (data.data && data.data.subs_info) || {};
@@ -1133,10 +1165,11 @@ async function _checkXlAxisPackageInfo() {
     console.error('[XL/AXIS] Gagal cek paket:', err);
     const msg = err && err.name === 'AbortError'
       ? 'Request timeout. Coba lagi beberapa saat.'
+      : (err && err.name === 'TypeError')
+        ? 'Gagal terhubung ke server. Coba lagi beberapa saat.'
       : (err && err.message) || 'Terjadi kesalahan.';
     showInlineError(msg);
   } finally {
-    clearTimeout(timeoutId);
     if (checkBtn) checkBtn.disabled = false;
   }
 }
