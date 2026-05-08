@@ -2298,6 +2298,12 @@ ul { list-style: none; }
 .sumenep-xlaxis-section .sumenep-weather-header h3 {
   color: #8af5be;
 }
+.sumenep-xlaxis-label {
+  width: 100%;
+  font-size: .76rem;
+  color: rgba(138,245,190,.78);
+  margin-bottom: -2px;
+}
 .sumenep-xlaxis-meta {
   font-size: .8rem;
   color: rgba(138,245,190,.8);

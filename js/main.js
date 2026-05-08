@@ -999,7 +999,7 @@ async function _checkXlAxisPackageInfo() {
   }
 
   if (!/^08\d{9,11}$/.test(normalizedNumber)) {
-    result.innerHTML = '<p class="sumenep-tiktok-error">⚠️ Nomor tidak valid. Gunakan format 08xxxx atau 628xxxx.</p>';
+    showInlineError('Nomor tidak valid. Gunakan format 08xxxx atau 628xxxx.');
     return;
   }
 
@@ -1012,6 +1012,14 @@ async function _checkXlAxisPackageInfo() {
   function asText(v, fallback) {
     if (v === null || v === undefined || v === '') return fallback || '-';
     return String(v);
+  }
+
+  function showInlineError(message) {
+    result.textContent = '';
+    const errEl = document.createElement('p');
+    errEl.className = 'sumenep-tiktok-error';
+    errEl.textContent = '⚠️ ' + message;
+    result.appendChild(errEl);
   }
 
   function parsePercentValue(v) {
@@ -1044,8 +1052,12 @@ async function _checkXlAxisPackageInfo() {
 
     const meta = document.createElement('p');
     meta.className = 'sumenep-xlaxis-meta';
-    meta.textContent =
-      `${asText(info.msisdn, normalizedNumber)} | ${asText(info.operator, 'XL/AXIS')} | ${asText(info.net_type, '-')} · Aktif: ${asText(info.tenure, '-')} · Exp: ${asText(info.exp_date, '-')}`;
+    const metaParts = [
+      `${asText(info.msisdn, normalizedNumber)} | ${asText(info.operator, 'XL/AXIS')} | ${asText(info.net_type, '-')}`,
+      `Aktif: ${asText(info.tenure, '-')}`,
+      `Exp: ${asText(info.exp_date, '-')}`
+    ];
+    meta.textContent = metaParts.join(' · ');
     result.appendChild(meta);
 
     if (info.grace_until) {
@@ -1081,12 +1093,12 @@ async function _checkXlAxisPackageInfo() {
       quotaList.className = 'sumenep-xlaxis-quota-list';
 
       const quotas = Array.isArray(pkg && pkg.quotas) ? pkg.quotas : [];
-      const hasNonZeroOrMinuteQuota = q => {
+      const hasActiveQuota = q => {
         const remaining = asText(q && q.remaining, '0');
         const remainingNum = parseFloat(remaining);
         return Number.isFinite(remainingNum) ? remainingNum > 0 : /menit/i.test(remaining);
       };
-      const filteredQuotas = quotas.filter(hasNonZeroOrMinuteQuota);
+      const filteredQuotas = quotas.filter(hasActiveQuota);
 
       if (!filteredQuotas.length) {
         const emptyQuota = document.createElement('p');
@@ -1120,11 +1132,7 @@ async function _checkXlAxisPackageInfo() {
     const msg = err && err.name === 'AbortError'
       ? 'Request timeout. Coba lagi beberapa saat.'
       : (err && err.message) || 'Terjadi kesalahan.';
-    result.textContent = '';
-    const errEl = document.createElement('p');
-    errEl.className = 'sumenep-tiktok-error';
-    errEl.textContent = '⚠️ ' + msg;
-    result.appendChild(errEl);
+    showInlineError(msg);
   } finally {
     clearTimeout(timeoutId);
     if (checkBtn) checkBtn.disabled = false;
