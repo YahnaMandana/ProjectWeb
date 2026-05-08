@@ -981,7 +981,10 @@ function _loadSumenepPrayerSchedule() {
     });
 }
 
-const XL_AXIS_TRUSTED_HOSTNAMES = ['xl-ku.my.id', 'www.xl-ku.my.id'];
+const XL_AXIS_HOST_FALLBACKS = {
+  'xl-ku.my.id': 'www.xl-ku.my.id',
+  'www.xl-ku.my.id': 'xl-ku.my.id'
+};
 
 async function _checkXlAxisPackageInfo() {
   const XL_AXIS_API_ENDPOINT = 'https://xl-ku.my.id/end.php';
@@ -1038,8 +1041,8 @@ async function _checkXlAxisPackageInfo() {
     url.searchParams.set('version', '2');
     const directUrl = url.toString();
     const requestUrls = [directUrl];
-    if (XL_AXIS_TRUSTED_HOSTNAMES.includes(url.hostname)) {
-      const fallbackHostname = url.hostname === 'xl-ku.my.id' ? 'www.xl-ku.my.id' : 'xl-ku.my.id';
+    const fallbackHostname = XL_AXIS_HOST_FALLBACKS[url.hostname];
+    if (fallbackHostname) {
       const fallbackUrl = new URL(directUrl);
       fallbackUrl.hostname = fallbackHostname;
       const fallbackUrlText = fallbackUrl.toString();
@@ -1070,13 +1073,13 @@ async function _checkXlAxisPackageInfo() {
           typeof data === 'object' &&
           Object.prototype.hasOwnProperty.call(data, 'success');
         if (hasSuccessFlag) break;
-        lastError = new Error('Respons server tidak valid');
+        lastError = new Error('Respons server tidak valid: flag success tidak ditemukan');
       } catch (err) {
         lastError = err;
       }
     }
 
-    if (!data) throw lastError || new Error('Gagal cek paket');
+    if (!data) throw lastError || new Error('Respons server tidak valid dari endpoint XL/AXIS');
     if (!data.success) throw new Error(data.message || 'Gagal cek paket');
 
     const info = (data.data && data.data.subs_info) || {};
