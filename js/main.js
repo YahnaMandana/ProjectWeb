@@ -991,15 +991,13 @@ async function _checkXlAxisPackageInfo() {
   const cleanNumber = rawNumber.replace(/\D/g, '');
   let normalizedNumber = cleanNumber;
 
-  if (normalizedNumber.startsWith('628')) {
-    normalizedNumber = '0' + normalizedNumber.slice(2);
-  } else if (normalizedNumber.startsWith('62')) {
+  if (normalizedNumber.startsWith('62')) {
     normalizedNumber = '0' + normalizedNumber.slice(2);
   } else if (normalizedNumber.startsWith('8')) {
     normalizedNumber = '0' + normalizedNumber;
   }
 
-  if (!/^08\d{8,13}$/.test(normalizedNumber)) {
+  if (!/^08\d{8,11}$/.test(normalizedNumber)) {
     result.innerHTML = '<p class="sumenep-tiktok-error">⚠️ Nomor tidak valid. Gunakan format 08xxxx atau 628xxxx.</p>';
     return;
   }
@@ -1082,11 +1080,12 @@ async function _checkXlAxisPackageInfo() {
       quotaList.className = 'sumenep-xlaxis-quota-list';
 
       const quotas = Array.isArray(pkg && pkg.quotas) ? pkg.quotas : [];
-      const filteredQuotas = quotas.filter(q => {
+      const isVisibleQuota = q => {
         const remaining = asText(q && q.remaining, '0');
         const remainingNum = parseFloat(remaining);
         return Number.isFinite(remainingNum) ? remainingNum > 0 : /menit/i.test(remaining);
-      });
+      };
+      const filteredQuotas = quotas.filter(isVisibleQuota);
 
       if (!filteredQuotas.length) {
         const emptyQuota = document.createElement('p');
