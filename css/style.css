@@ -2123,6 +2123,15 @@ ul { list-style: none; }
   border-color: rgba(255,140,0,.4);
   color: #ffb347;
 }
+.sumenep-action-btn--xlaxis {
+  background: linear-gradient(135deg, rgba(62,207,142,.22), rgba(20,130,90,.16));
+  border-color: rgba(62,207,142,.45);
+  color: #8af5be;
+}
+.sumenep-action-btn--xlaxis:hover {
+  background: linear-gradient(135deg, rgba(62,207,142,.4), rgba(20,130,90,.3));
+  box-shadow: 0 4px 18px rgba(62,207,142,.22);
+}
 .sumenep-action-btn--facebook {
   background: linear-gradient(135deg, rgba(24,119,242,.22), rgba(66,153,255,.16));
   border-color: rgba(24,119,242,.4);
@@ -2275,6 +2284,66 @@ ul { list-style: none; }
 }
 .sumenep-facebook-dl-hd {
   background: linear-gradient(135deg, #42a5f5, #1565c0);
+}
+
+/* ---------- XL AXIS check section ---------- */
+.sumenep-xlaxis-section {
+  background: linear-gradient(145deg, #062114, #03140c);
+  border: 1px solid rgba(62,207,142,.25);
+  border-radius: 18px;
+  padding: 18px;
+  animation: smFadeUp .6s .12s ease both;
+  margin-top: 14px;
+}
+.sumenep-xlaxis-section .sumenep-weather-header h3 {
+  color: #8af5be;
+}
+.sumenep-xlaxis-label {
+  width: 100%;
+  font-size: .76rem;
+  color: rgba(138,245,190,.78);
+  margin-bottom: 0;
+}
+.sumenep-xlaxis-meta {
+  font-size: .8rem;
+  color: rgba(138,245,190,.8);
+  margin: 10px 0 8px;
+  line-height: 1.5;
+}
+.sumenep-xlaxis-package {
+  background: rgba(255,255,255,.05);
+  border: 1px solid rgba(62,207,142,.2);
+  border-radius: 12px;
+  padding: 12px;
+  margin-top: 10px;
+}
+.sumenep-xlaxis-package-title {
+  font-size: .85rem;
+  font-weight: 700;
+  color: #8af5be;
+  margin: 0 0 4px;
+}
+.sumenep-xlaxis-package-exp {
+  font-size: .74rem;
+  color: rgba(138,245,190,.65);
+  margin: 0 0 10px;
+}
+.sumenep-xlaxis-quota-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.sumenep-xlaxis-quota-item {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: .78rem;
+  color: rgba(255,255,255,.85);
+}
+.sumenep-xlaxis-quota-item span:last-child {
+  color: #8af5be;
+  font-weight: 700;
+  white-space: nowrap;
 }
 
 /* ---------- Yakult Calculator section ---------- */

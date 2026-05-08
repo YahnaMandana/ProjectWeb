@@ -145,6 +145,7 @@
         <div class="sumenep-action-buttons">
           <button class="sumenep-action-btn" id="sumenepCekCuacaBtn">🌤️ Info Cuaca Sumenep</button>
           <button class="sumenep-action-btn sumenep-action-btn--sholat" id="sumenepCekSholatBtn">🕌 Jadwal Sholat Sumenep</button>
+          <button class="sumenep-action-btn sumenep-action-btn--xlaxis" id="sumenepCekXlAxisBtn">📶 Cek Info XL &amp; AXIS</button>
           <button class="sumenep-action-btn sumenep-action-btn--tiktok" id="sumenepDownloadTiktokBtn">🎵 Download Video TikTok</button>
           <button class="sumenep-action-btn sumenep-action-btn--facebook" id="sumenepDownloadFacebookBtn">📘 Download Video Facebook</button>
           <button class="sumenep-action-btn sumenep-action-btn--yakult" id="sumenepKalkulatorYakultBtn">🥛 Kalkulator Yakult</button>
@@ -176,6 +177,19 @@
               <p>Memuat jadwal sholat…</p>
             </div>
           </div>
+        </div>
+
+        <!-- XL & AXIS info section -->
+        <div class="sumenep-xlaxis-section" id="sumenepXlAxisSection" style="display:none;">
+          <div class="sumenep-weather-header">
+            <h3>📶 Cek Info XL &amp; AXIS</h3>
+          </div>
+          <div class="sumenep-tiktok-form">
+            <label class="sumenep-xlaxis-label" for="sumenepXlAxisNumber">Nomor XL/AXIS</label>
+            <input type="tel" id="sumenepXlAxisNumber" class="sumenep-tiktok-input" placeholder="Masukkan nomor XL/AXIS (contoh: 0819xxxxxx)…" autocomplete="off" inputmode="numeric" />
+            <button class="sumenep-tiktok-dl-btn" id="sumenepXlAxisCheckBtn" aria-label="Cek informasi paket XL dan AXIS">🔎 Cek Info</button>
+          </div>
+          <div id="sumenepXlAxisResult"></div>
         </div>
 
         <!-- TikTok Download section -->
@@ -361,6 +375,18 @@
 
       var refreshSholatBtn = document.getElementById('sumenepRefreshSholatBtn');
       if (refreshSholatBtn) refreshSholatBtn.addEventListener('click', _loadSumenepPrayerSchedule);
+
+      var cekXlAxisBtn = document.getElementById('sumenepCekXlAxisBtn');
+      if (cekXlAxisBtn) {
+        cekXlAxisBtn.addEventListener('click', function () {
+          var section = document.getElementById('sumenepXlAxisSection');
+          if (!section) return;
+          section.style.display = section.style.display === 'none' ? '' : 'none';
+        });
+      }
+
+      var xlAxisCheckBtn = document.getElementById('sumenepXlAxisCheckBtn');
+      if (xlAxisCheckBtn) xlAxisCheckBtn.addEventListener('click', _checkXlAxisPackageInfo);
 
       var downloadTiktokBtn = document.getElementById('sumenepDownloadTiktokBtn');
       if (downloadTiktokBtn) {
