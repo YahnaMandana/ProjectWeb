@@ -982,6 +982,7 @@ function _loadSumenepPrayerSchedule() {
 }
 
 async function _checkXlAxisPackageInfo() {
+  const XL_AXIS_API_TIMEOUT_MS = 10000;
   const numberInput = document.getElementById('sumenepXlAxisNumber');
   const checkBtn = document.getElementById('sumenepXlAxisCheckBtn');
   const result = document.getElementById('sumenepXlAxisResult');
@@ -997,7 +998,7 @@ async function _checkXlAxisPackageInfo() {
     normalizedNumber = '0' + normalizedNumber;
   }
 
-  if (!/^08\d{8,11}$/.test(normalizedNumber)) {
+  if (!/^08\d{9,11}$/.test(normalizedNumber)) {
     result.innerHTML = '<p class="sumenep-tiktok-error">⚠️ Nomor tidak valid. Gunakan format 08xxxx atau 628xxxx.</p>';
     return;
   }
@@ -1006,7 +1007,7 @@ async function _checkXlAxisPackageInfo() {
   result.innerHTML = '<p class="sumenep-tiktok-processing">⏳ Sedang cek info kuota dan masa aktif…</p>';
 
   const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), 10000);
+  const timeoutId = setTimeout(() => controller.abort(), XL_AXIS_API_TIMEOUT_MS);
 
   function asText(v, fallback) {
     if (v === null || v === undefined || v === '') return fallback || '-';
@@ -1080,12 +1081,12 @@ async function _checkXlAxisPackageInfo() {
       quotaList.className = 'sumenep-xlaxis-quota-list';
 
       const quotas = Array.isArray(pkg && pkg.quotas) ? pkg.quotas : [];
-      const isVisibleQuota = q => {
+      const hasNonZeroOrMinuteQuota = q => {
         const remaining = asText(q && q.remaining, '0');
         const remainingNum = parseFloat(remaining);
         return Number.isFinite(remainingNum) ? remainingNum > 0 : /menit/i.test(remaining);
       };
-      const filteredQuotas = quotas.filter(isVisibleQuota);
+      const filteredQuotas = quotas.filter(hasNonZeroOrMinuteQuota);
 
       if (!filteredQuotas.length) {
         const emptyQuota = document.createElement('p');
