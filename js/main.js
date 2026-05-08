@@ -983,6 +983,7 @@ function _loadSumenepPrayerSchedule() {
 
 async function _checkXlAxisPackageInfo() {
   const XL_AXIS_API_TIMEOUT_MS = 10000;
+  const MINUTE_UNIT_PATTERN = /menit/i;
   const numberInput = document.getElementById('sumenepXlAxisNumber');
   const checkBtn = document.getElementById('sumenepXlAxisCheckBtn');
   const result = document.getElementById('sumenepXlAxisResult');
@@ -1096,7 +1097,7 @@ async function _checkXlAxisPackageInfo() {
       const hasActiveQuota = q => {
         const remaining = asText(q && q.remaining, '0');
         const remainingNum = parseFloat(remaining);
-        return Number.isFinite(remainingNum) ? remainingNum > 0 : /menit/i.test(remaining);
+        return Number.isFinite(remainingNum) ? remainingNum > 0 : MINUTE_UNIT_PATTERN.test(remaining);
       };
       const filteredQuotas = quotas.filter(hasActiveQuota);
 

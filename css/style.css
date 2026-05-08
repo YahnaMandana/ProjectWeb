@@ -2302,7 +2302,7 @@ ul { list-style: none; }
   width: 100%;
   font-size: .76rem;
   color: rgba(138,245,190,.78);
-  margin-bottom: -2px;
+  margin-bottom: 0;
 }
 .sumenep-xlaxis-meta {
   font-size: .8rem;
