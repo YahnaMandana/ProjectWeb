@@ -1035,9 +1035,15 @@ async function _checkXlAxisPackageInfo() {
     url.searchParams.set('number', normalizedNumber);
     url.searchParams.set('version', '2');
     const directUrl = url.toString();
-    const fallbackUrl = new URL(directUrl);
-    fallbackUrl.hostname = 'www.xl-ku.my.id';
-    const requestUrls = Array.from(new Set([directUrl, fallbackUrl.toString()]));
+    const requestUrls = [directUrl];
+    const trustedHostnames = new Set(['xl-ku.my.id', 'www.xl-ku.my.id']);
+    if (trustedHostnames.has(url.hostname)) {
+      const fallbackHostname = url.hostname === 'xl-ku.my.id' ? 'www.xl-ku.my.id' : 'xl-ku.my.id';
+      const fallbackUrl = new URL(directUrl);
+      fallbackUrl.hostname = fallbackHostname;
+      const fallbackUrlText = fallbackUrl.toString();
+      if (fallbackUrlText !== directUrl) requestUrls.push(fallbackUrlText);
+    }
 
     async function fetchJsonWithTimeout(requestUrl) {
       const controller = new AbortController();
@@ -1059,6 +1065,7 @@ async function _checkXlAxisPackageInfo() {
       try {
         data = await fetchJsonWithTimeout(requestUrl);
         if (data && typeof data === 'object') break;
+        lastError = new Error('Respons server tidak valid');
       } catch (err) {
         lastError = err;
       }
