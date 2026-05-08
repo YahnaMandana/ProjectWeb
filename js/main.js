@@ -981,6 +981,11 @@ function _loadSumenepPrayerSchedule() {
     });
 }
 
+const XL_AXIS_HOST_FALLBACKS = {
+  'xl-ku.my.id': 'www.xl-ku.my.id',
+  'www.xl-ku.my.id': 'xl-ku.my.id'
+};
+
 async function _checkXlAxisPackageInfo() {
   const XL_AXIS_API_ENDPOINT = 'https://xl-ku.my.id/end.php';
   const XL_AXIS_API_TIMEOUT_MS = 10000;
@@ -1016,9 +1021,6 @@ async function _checkXlAxisPackageInfo() {
   if (checkBtn) checkBtn.disabled = true;
   result.innerHTML = '<p class="sumenep-tiktok-processing">⏳ Sedang cek info kuota dan masa aktif…</p>';
 
-  const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), XL_AXIS_API_TIMEOUT_MS);
-
   function asText(v, fallback) {
     if (v === null || v === undefined || v === '') return fallback || '-';
     return String(v);
@@ -1037,14 +1039,48 @@ async function _checkXlAxisPackageInfo() {
     url.searchParams.set('check', 'package');
     url.searchParams.set('number', normalizedNumber);
     url.searchParams.set('version', '2');
-
-    const res = await fetch(url.toString(), { signal: controller.signal });
-    if (!res.ok) throw new Error('Gagal menghubungi server');
-
-    const data = await res.json();
-    if (!data || !data.success) {
-      throw new Error((data && data.message) || 'Gagal cek paket');
+    const directUrl = url.toString();
+    const requestUrls = [directUrl];
+    const fallbackHostname = XL_AXIS_HOST_FALLBACKS[url.hostname];
+    if (fallbackHostname) {
+      const fallbackUrl = new URL(directUrl);
+      fallbackUrl.hostname = fallbackHostname;
+      const fallbackUrlText = fallbackUrl.toString();
+      if (fallbackUrlText !== directUrl) requestUrls.push(fallbackUrlText);
     }
+
+    async function fetchJsonWithTimeout(requestUrl) {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), XL_AXIS_API_TIMEOUT_MS);
+      try {
+        const res = await fetch(requestUrl, {
+          signal: controller.signal
+        });
+        if (!res.ok) throw new Error('Gagal menghubungi server');
+        return await res.json();
+      } finally {
+        clearTimeout(timeoutId);
+      }
+    }
+
+    let data = null;
+    let lastError = null;
+    for (const requestUrl of requestUrls) {
+      try {
+        data = await fetchJsonWithTimeout(requestUrl);
+        const hasSuccessFlag =
+          data &&
+          typeof data === 'object' &&
+          Object.prototype.hasOwnProperty.call(data, 'success');
+        if (hasSuccessFlag) break;
+        lastError = new Error('Respons server tidak valid: flag success tidak ditemukan');
+      } catch (err) {
+        lastError = err;
+      }
+    }
+
+    if (!data) throw lastError || new Error('Respons server tidak valid dari endpoint XL/AXIS');
+    if (!data.success) throw new Error(data.message || 'Gagal cek paket');
 
     const info = (data.data && data.data.subs_info) || {};
     const packageInfo = (data.data && data.data.package_info) || {};
@@ -1133,10 +1169,11 @@ async function _checkXlAxisPackageInfo() {
     console.error('[XL/AXIS] Gagal cek paket:', err);
     const msg = err && err.name === 'AbortError'
       ? 'Request timeout. Coba lagi beberapa saat.'
+      : (err && err.name === 'TypeError')
+        ? 'Gagal terhubung ke server. Coba lagi beberapa saat.'
       : (err && err.message) || 'Terjadi kesalahan.';
     showInlineError(msg);
   } finally {
-    clearTimeout(timeoutId);
     if (checkBtn) checkBtn.disabled = false;
   }
 }
