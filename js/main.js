@@ -982,12 +982,21 @@ function _loadSumenepPrayerSchedule() {
 }
 
 async function _checkXlAxisPackageInfo() {
+  const XL_AXIS_API_ENDPOINT = 'https://xl-ku.my.id/end.php';
   const XL_AXIS_API_TIMEOUT_MS = 10000;
   const MINUTE_UNIT_PATTERN = /menit/i;
   const numberInput = document.getElementById('sumenepXlAxisNumber');
   const checkBtn = document.getElementById('sumenepXlAxisCheckBtn');
   const result = document.getElementById('sumenepXlAxisResult');
   if (!numberInput || !result) return;
+
+  function showInlineError(message) {
+    result.textContent = '';
+    const errEl = document.createElement('p');
+    errEl.className = 'sumenep-tiktok-error';
+    errEl.textContent = '⚠️ ' + message;
+    result.appendChild(errEl);
+  }
 
   const rawNumber = numberInput.value.trim();
   const cleanNumber = rawNumber.replace(/\D/g, '');
@@ -1015,14 +1024,6 @@ async function _checkXlAxisPackageInfo() {
     return String(v);
   }
 
-  function showInlineError(message) {
-    result.textContent = '';
-    const errEl = document.createElement('p');
-    errEl.className = 'sumenep-tiktok-error';
-    errEl.textContent = '⚠️ ' + message;
-    result.appendChild(errEl);
-  }
-
   function parsePercentValue(v) {
     const num = Number(v);
     if (Number.isFinite(num)) return num.toFixed(1) + '%';
@@ -1032,7 +1033,7 @@ async function _checkXlAxisPackageInfo() {
   }
 
   try {
-    const url = new URL('https://xl-ku.my.id/end.php');
+    const url = new URL(XL_AXIS_API_ENDPOINT);
     url.searchParams.set('check', 'package');
     url.searchParams.set('number', normalizedNumber);
     url.searchParams.set('version', '2');
