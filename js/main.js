@@ -1037,8 +1037,7 @@ async function _checkXlAxisPackageInfo() {
     const directUrl = url.toString();
     const requestUrls = [
       directUrl,
-      'https://api.allorigins.win/raw?url=' + encodeURIComponent(directUrl),
-      'https://corsproxy.io/?' + encodeURIComponent(directUrl)
+      directUrl.replace('https://xl-ku.my.id/', 'https://www.xl-ku.my.id/')
     ];
 
     async function fetchJsonWithTimeout(requestUrl) {
@@ -1046,17 +1045,10 @@ async function _checkXlAxisPackageInfo() {
       const timeoutId = setTimeout(() => controller.abort(), XL_AXIS_API_TIMEOUT_MS);
       try {
         const res = await fetch(requestUrl, {
-          signal: controller.signal,
-          headers: { Accept: 'application/json' }
+          signal: controller.signal
         });
         if (!res.ok) throw new Error('Gagal menghubungi server');
-        const raw = await res.text();
-        return JSON.parse(raw);
-      } catch (err) {
-        if (err && err.name === 'SyntaxError') {
-          throw new Error('Respons server tidak valid');
-        }
-        throw err;
+        return await res.json();
       } finally {
         clearTimeout(timeoutId);
       }
@@ -1067,16 +1059,14 @@ async function _checkXlAxisPackageInfo() {
     for (const requestUrl of requestUrls) {
       try {
         data = await fetchJsonWithTimeout(requestUrl);
-        if (data && data.success) break;
-        lastError = new Error((data && data.message) || 'Gagal cek paket');
+        if (data) break;
       } catch (err) {
         lastError = err;
       }
     }
 
-    if (!data || !data.success) {
-      throw lastError || new Error('Gagal cek paket');
-    }
+    if (!data) throw lastError || new Error('Gagal cek paket');
+    if (!data.success) throw new Error(data.message || 'Gagal cek paket');
 
     const info = (data.data && data.data.subs_info) || {};
     const packageInfo = (data.data && data.data.package_info) || {};
