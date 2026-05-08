@@ -981,6 +981,156 @@ function _loadSumenepPrayerSchedule() {
     });
 }
 
+async function _checkXlAxisPackageInfo() {
+  const numberInput = document.getElementById('sumenepXlAxisNumber');
+  const checkBtn = document.getElementById('sumenepXlAxisCheckBtn');
+  const result = document.getElementById('sumenepXlAxisResult');
+  if (!numberInput || !result) return;
+
+  const rawNumber = numberInput.value.trim();
+  const cleanNumber = rawNumber.replace(/\D/g, '');
+  let normalizedNumber = cleanNumber;
+
+  if (normalizedNumber.startsWith('628')) {
+    normalizedNumber = '0' + normalizedNumber.slice(2);
+  } else if (normalizedNumber.startsWith('62')) {
+    normalizedNumber = '0' + normalizedNumber.slice(2);
+  } else if (normalizedNumber.startsWith('8')) {
+    normalizedNumber = '0' + normalizedNumber;
+  }
+
+  if (!/^08\d{8,13}$/.test(normalizedNumber)) {
+    result.innerHTML = '<p class="sumenep-tiktok-error">⚠️ Nomor tidak valid. Gunakan format 08xxxx atau 628xxxx.</p>';
+    return;
+  }
+
+  if (checkBtn) checkBtn.disabled = true;
+  result.innerHTML = '<p class="sumenep-tiktok-processing">⏳ Sedang cek info kuota dan masa aktif…</p>';
+
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 10000);
+
+  function asText(v, fallback) {
+    if (v === null || v === undefined || v === '') return fallback || '-';
+    return String(v);
+  }
+
+  function parsePercentValue(v) {
+    const num = Number(v);
+    if (Number.isFinite(num)) return num.toFixed(1) + '%';
+    const parsed = parseFloat(v);
+    if (Number.isFinite(parsed)) return parsed.toFixed(1) + '%';
+    return asText(v, '-');
+  }
+
+  try {
+    const url = new URL('https://xl-ku.my.id/end.php');
+    url.searchParams.set('check', 'package');
+    url.searchParams.set('number', normalizedNumber);
+    url.searchParams.set('version', '2');
+
+    const res = await fetch(url.toString(), { signal: controller.signal });
+    if (!res.ok) throw new Error('Gagal menghubungi server');
+
+    const data = await res.json();
+    if (!data || !data.success) {
+      throw new Error((data && data.message) || 'Gagal cek paket');
+    }
+
+    const info = (data.data && data.data.subs_info) || {};
+    const packageInfo = (data.data && data.data.package_info) || {};
+    const packages = Array.isArray(packageInfo.packages) ? packageInfo.packages : [];
+
+    result.textContent = '';
+
+    const meta = document.createElement('p');
+    meta.className = 'sumenep-xlaxis-meta';
+    meta.textContent =
+      `${asText(info.msisdn, normalizedNumber)} | ${asText(info.operator, 'XL/AXIS')} | ${asText(info.net_type, '-')} · Aktif: ${asText(info.tenure, '-')} · Exp: ${asText(info.exp_date, '-')}`;
+    result.appendChild(meta);
+
+    if (info.grace_until) {
+      const grace = document.createElement('p');
+      grace.className = 'sumenep-xlaxis-meta';
+      grace.textContent = `Masa tenggang: ${asText(info.grace_until, '-')}${info.volte ? ` · VoLTE: ${asText(info.volte, '-')}` : ''}`;
+      result.appendChild(grace);
+    }
+
+    if (!packages.length) {
+      const empty = document.createElement('p');
+      empty.className = 'sumenep-tiktok-error';
+      empty.textContent = '⚠️ Paket tidak ditemukan untuk nomor ini.';
+      result.appendChild(empty);
+      return;
+    }
+
+    packages.forEach(pkg => {
+      const card = document.createElement('div');
+      card.className = 'sumenep-xlaxis-package';
+
+      const nameEl = document.createElement('p');
+      nameEl.className = 'sumenep-xlaxis-package-title';
+      nameEl.textContent = asText(pkg && pkg.name, 'Paket');
+      card.appendChild(nameEl);
+
+      const expEl = document.createElement('p');
+      expEl.className = 'sumenep-xlaxis-package-exp';
+      expEl.textContent = `Expired: ${asText(pkg && pkg.expiry, '-')}`;
+      card.appendChild(expEl);
+
+      const quotaList = document.createElement('div');
+      quotaList.className = 'sumenep-xlaxis-quota-list';
+
+      const quotas = Array.isArray(pkg && pkg.quotas) ? pkg.quotas : [];
+      const filteredQuotas = quotas.filter(q => {
+        const remaining = asText(q && q.remaining, '0');
+        const remainingNum = parseFloat(remaining);
+        return Number.isFinite(remainingNum) ? remainingNum > 0 : /menit/i.test(remaining);
+      });
+
+      if (!filteredQuotas.length) {
+        const emptyQuota = document.createElement('p');
+        emptyQuota.className = 'sumenep-tiktok-error';
+        emptyQuota.textContent = 'Tidak ada kuota aktif pada paket ini.';
+        card.appendChild(emptyQuota);
+        result.appendChild(card);
+        return;
+      }
+
+      filteredQuotas.forEach(q => {
+        const row = document.createElement('div');
+        row.className = 'sumenep-xlaxis-quota-item';
+
+        const left = document.createElement('span');
+        left.textContent = `${asText(q && q.name, 'Kuota')}: ${asText(q && q.remaining, '-')} / ${asText(q && q.total, '-')}`;
+
+        const right = document.createElement('span');
+        right.textContent = parsePercentValue(q && q.percent);
+
+        row.appendChild(left);
+        row.appendChild(right);
+        quotaList.appendChild(row);
+      });
+
+      card.appendChild(quotaList);
+      result.appendChild(card);
+    });
+  } catch (err) {
+    console.error('[XL/AXIS] Gagal cek paket:', err);
+    const msg = err && err.name === 'AbortError'
+      ? 'Request timeout. Coba lagi beberapa saat.'
+      : (err && err.message) || 'Terjadi kesalahan.';
+    result.textContent = '';
+    const errEl = document.createElement('p');
+    errEl.className = 'sumenep-tiktok-error';
+    errEl.textContent = '⚠️ ' + msg;
+    result.appendChild(errEl);
+  } finally {
+    clearTimeout(timeoutId);
+    if (checkBtn) checkBtn.disabled = false;
+  }
+}
+
 async function _downloadTiktokVideo() {
   const urlInput = document.getElementById('sumenepTiktokUrl');
   const dlBtn    = document.getElementById('sumenepTiktokDlBtn');
