@@ -1035,10 +1035,9 @@ async function _checkXlAxisPackageInfo() {
     url.searchParams.set('number', normalizedNumber);
     url.searchParams.set('version', '2');
     const directUrl = url.toString();
-    const requestUrls = [
-      directUrl,
-      directUrl.replace('https://xl-ku.my.id/', 'https://www.xl-ku.my.id/')
-    ];
+    const fallbackUrl = new URL(directUrl);
+    fallbackUrl.hostname = 'www.xl-ku.my.id';
+    const requestUrls = Array.from(new Set([directUrl, fallbackUrl.toString()]));
 
     async function fetchJsonWithTimeout(requestUrl) {
       const controller = new AbortController();
@@ -1059,13 +1058,13 @@ async function _checkXlAxisPackageInfo() {
     for (const requestUrl of requestUrls) {
       try {
         data = await fetchJsonWithTimeout(requestUrl);
-        if (data) break;
+        if (data && typeof data === 'object') break;
       } catch (err) {
         lastError = err;
       }
     }
 
-    if (!data) throw lastError || new Error('Gagal cek paket');
+    if (!data) throw lastError || new Error('Gagal cek paket setelah mencoba beberapa server');
     if (!data.success) throw new Error(data.message || 'Gagal cek paket');
 
     const info = (data.data && data.data.subs_info) || {};
