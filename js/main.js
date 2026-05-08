@@ -981,6 +981,8 @@ function _loadSumenepPrayerSchedule() {
     });
 }
 
+const XL_AXIS_TRUSTED_HOSTNAMES = ['xl-ku.my.id', 'www.xl-ku.my.id'];
+
 async function _checkXlAxisPackageInfo() {
   const XL_AXIS_API_ENDPOINT = 'https://xl-ku.my.id/end.php';
   const XL_AXIS_API_TIMEOUT_MS = 10000;
@@ -1036,8 +1038,7 @@ async function _checkXlAxisPackageInfo() {
     url.searchParams.set('version', '2');
     const directUrl = url.toString();
     const requestUrls = [directUrl];
-    const trustedHostnames = new Set(['xl-ku.my.id', 'www.xl-ku.my.id']);
-    if (trustedHostnames.has(url.hostname)) {
+    if (XL_AXIS_TRUSTED_HOSTNAMES.includes(url.hostname)) {
       const fallbackHostname = url.hostname === 'xl-ku.my.id' ? 'www.xl-ku.my.id' : 'xl-ku.my.id';
       const fallbackUrl = new URL(directUrl);
       fallbackUrl.hostname = fallbackHostname;
@@ -1064,14 +1065,18 @@ async function _checkXlAxisPackageInfo() {
     for (const requestUrl of requestUrls) {
       try {
         data = await fetchJsonWithTimeout(requestUrl);
-        if (data && typeof data === 'object') break;
+        const hasSuccessFlag =
+          data &&
+          typeof data === 'object' &&
+          Object.prototype.hasOwnProperty.call(data, 'success');
+        if (hasSuccessFlag) break;
         lastError = new Error('Respons server tidak valid');
       } catch (err) {
         lastError = err;
       }
     }
 
-    if (!data) throw lastError || new Error('Gagal cek paket setelah mencoba beberapa server');
+    if (!data) throw lastError || new Error('Gagal cek paket');
     if (!data.success) throw new Error(data.message || 'Gagal cek paket');
 
     const info = (data.data && data.data.subs_info) || {};
